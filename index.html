@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Essayez votre cadre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="entete">
+    <div class="marque">
+      <span class="marque-nom">Atelier d'encadrement</span>
+      <span class="marque-client">[nom de l'atelier]</span>
+    </div>
+    <span class="badge">Prototype</span>
+  </header>
+
+  <div id="alerte" class="alerte" hidden></div>
+
+  <main>
+    <!-- 1. Dépôt de la photo -->
+    <section id="etape-depot" class="accueil">
+      <p class="surtitre">Essayage en ligne</p>
+      <h1>Voyez votre œuvre encadrée<br>avant de passer à l'atelier.</h1>
+      <p class="chapeau">Déposez une photo de votre œuvre. Nous vous proposons six cadres choisis pour elle, et vous voyez le résultat tout de suite.</p>
+
+      <label id="depot" class="depot">
+        <input id="fichier" type="file" accept="image/*">
+        <svg class="depot-icone" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="10" width="36" height="28" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="11" y="15" width="26" height="18" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M14 30l6-7 5 5 3-3 6 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <strong>Déposez une photo de votre œuvre</strong>
+        <span>ou touchez ici pour en choisir une</span>
+      </label>
+
+      <div class="exemples">
+        <span>Pas de photo sous la main ?</span>
+        <button type="button" class="puce" data-exemple="couleurs">Champs de couleur</button>
+        <button type="button" class="puce" data-exemple="paysage">Paysage</button>
+        <button type="button" class="puce" data-exemple="photo">Photo noir et blanc</button>
+      </div>
+      <p class="note">Votre photo sert seulement à proposer les cadres. Elle n'est pas conservée.</p>
+    </section>
+
+    <!-- 2. L'œuvre -->
+    <section id="etape-oeuvre" class="oeuvre" hidden>
+      <div class="oeuvre-image">
+        <canvas id="apercu-oeuvre"></canvas>
+        <div class="oeuvre-outils">
+          <button type="button" id="btn-recadrer" class="lien">Recadrer</button>
+          <button type="button" id="btn-changer" class="lien">Changer de photo</button>
+        </div>
+      </div>
+      <div class="oeuvre-reglages">
+        <h2>Votre œuvre</h2>
+        <label class="champ">
+          <span>Type d'œuvre</span>
+          <select id="type">
+            <option value="toile">Peinture sur toile (châssis)</option>
+            <option value="papier">Œuvre sur papier (dessin, aquarelle, gravure)</option>
+            <option value="photo">Photographie</option>
+            <option value="affiche">Affiche ou reproduction</option>
+          </select>
+        </label>
+        <div class="dims">
+          <label class="champ"><span>Largeur</span><span class="unite"><input id="larg" type="number" min="5" max="300" step="0.5" inputmode="decimal">cm</span></label>
+          <span class="fois">×</span>
+          <label class="champ"><span>Hauteur</span><span class="unite"><input id="haut" type="number" min="5" max="300" step="0.5" inputmode="decimal">cm</span></label>
+        </div>
+        <p class="aide">Les proportions de la photo sont conservées. Mesurez la partie visible de l'œuvre.</p>
+        <button type="button" id="btn-proposer" class="principal">Proposer six cadres</button>
+      </div>
+    </section>
+
+    <!-- 3. Les propositions -->
+    <section id="etape-resultats" class="resultats" hidden>
+      <div class="analyse">
+        <h2>Six cadres pour votre œuvre</h2>
+        <p id="lecture" class="lecture"></p>
+        <div id="palette" class="palette" aria-label="Couleurs dominantes"></div>
+        <p id="mode" class="mode"></p>
+      </div>
+
+      <div class="atelier">
+        <div id="scene-boite" class="scene"><canvas id="scene"></canvas></div>
+        <aside class="panneau">
+          <p class="ref" id="choix-ref"></p>
+          <h3 id="choix-nom"></h3>
+          <p id="choix-desc" class="desc"></p>
+          <div id="choix-raison" class="raison"></div>
+          <dl id="choix-fiche" class="fiche"></dl>
+
+          <div class="reglage" id="reglage-pp">
+            <span class="reglage-titre">Passe-partout</span>
+            <div id="pp-choix" class="pastilles"></div>
+            <label class="curseur"><span>Largeur</span><input id="pp-cm" type="range" min="3" max="12" step="0.5"><output id="pp-cm-val"></output></label>
+            <p id="pp-note" class="aide" hidden>Une caisse américaine se pose sans passe-partout ni verre.</p>
+          </div>
+          <div class="reglage">
+            <span class="reglage-titre">Couleur du mur</span>
+            <div id="mur-choix" class="pastilles"></div>
+          </div>
+          <label class="bascule"><input id="vitre" type="checkbox"> Verre (reflet)</label>
+
+          <div class="actions">
+            <button type="button" id="btn-soumission" class="principal">Demander une soumission</button>
+            <button type="button" id="btn-telecharger" class="secondaire">Télécharger l'image</button>
+          </div>
+        </aside>
+      </div>
+
+      <h3 class="titre-grille">Les six propositions</h3>
+      <div id="grille" class="grille"></div>
+
+      <details class="catalogue">
+        <summary>Essayer une autre moulure du catalogue</summary>
+        <div id="catalogue" class="catalogue-grille"></div>
+      </details>
+    </section>
+  </main>
+
+  <!-- Recadrage -->
+  <div id="recadrage" class="modale" hidden>
+    <div class="modale-boite">
+      <h3>Recadrer la photo</h3>
+      <p class="aide">Gardez seulement l'œuvre : tirez les coins pour enlever le mur ou la table autour.</p>
+      <div id="rc-scene" class="rc-scene">
+        <canvas id="rc-canvas"></canvas>
+        <div id="rc-cadre" class="rc-cadre">
+          <span class="poignee" data-coin="hg"></span><span class="poignee" data-coin="hd"></span>
+          <span class="poignee" data-coin="bg"></span><span class="poignee" data-coin="bd"></span>
+        </div>
+      </div>
+      <div class="actions">
+        <button type="button" id="rc-annuler" class="secondaire">Annuler</button>
+        <button type="button" id="rc-tout" class="lien">Toute la photo</button>
+        <button type="button" id="rc-appliquer" class="principal">Appliquer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Soumission (maquette) -->
+  <dialog id="soumission" class="dialogue">
+    <h3>Demande de soumission</h3>
+    <dl id="soumission-resume" class="fiche"></dl>
+    <p class="aide">Dans le site final, ce formulaire envoie la demande et l'image à l'atelier. Le prototype n'envoie rien.</p>
+    <form method="dialog"><button class="principal">Fermer</button></form>
+  </dialog>
+
+  <footer class="pied">
+    <p>Prototype. Le catalogue est fictif : il imite des moulures courantes du marché, en attendant les moulures réelles de l'atelier.</p>
+    <p><a href="credits.html">Crédits des images</a></p>
+  </footer>
+
+  <script src="js/matieres.js"></script>
+  <script src="js/rendu.js"></script>
+  <script src="js/suggestion.js"></script>
+  <script src="js/exemples.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

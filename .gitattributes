@@ -1,0 +1,3 @@
+# Git stocke et restitue les octets tels quels : aucune traduction de fin de
+# ligne (core.autocrlf=true est le défaut de Git for Windows).
+* -text

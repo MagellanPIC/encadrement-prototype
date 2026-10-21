@@ -1,0 +1,208 @@
+{
+  "_note": "Catalogue FICTIF du prototype. Chaque moulure imite un type courant du marché. À remplacer par les moulures réelles de l'atelier (photo de la baguette + fiche). Les champs 'rendu' décrivent comment le navigateur dessine le cadre.",
+  "passe_partout": [
+    {"id": "aucun",       "nom": "Sans passe-partout"},
+    {"id": "blanc_casse", "nom": "Blanc cassé", "couleur": "#f3efe6", "ame": "#fbf9f4"},
+    {"id": "creme",       "nom": "Crème",       "couleur": "#e9dfc8", "ame": "#f8f4ea"},
+    {"id": "gris_perle",  "nom": "Gris perle",  "couleur": "#cfcdc8", "ame": "#f4f3f0"},
+    {"id": "noir",        "nom": "Noir",        "couleur": "#1d1c1b", "ame": "#f1efe9"}
+  ],
+  "moulures": [
+    {
+      "id": "M-101", "nom": "Noir mat fin", "famille": "noir",
+      "style": "moderne", "finition": "noir mat", "matiere": "bois peint",
+      "largeur_cm": 1.6, "temperature": "neutre", "valeur": "fonce",
+      "convient": ["photo", "affiche", "papier"],
+      "description": "Baguette plate et étroite, noir profond. La référence pour la photo et le graphisme.",
+      "rendu": {"type": "procedural", "matiere": "noir_mat",
+        "profil": [{"w": 1, "forme": "plat", "h0": 1.6}]}
+    },
+    {
+      "id": "M-102", "nom": "Noir laqué à gorge", "famille": "noir",
+      "style": "contemporain", "finition": "noir laqué", "matiere": "bois laqué",
+      "largeur_cm": 3.2, "temperature": "neutre", "valeur": "fonce",
+      "convient": ["photo", "affiche", "papier", "toile"],
+      "description": "Profil creusé en gorge, laque brillante. Élégant sur les œuvres contrastées.",
+      "rendu": {"type": "procedural", "matiere": "noir_laque",
+        "profil": [{"w": 0.12, "forme": "perle", "h0": 2.2, "h1": 2.2, "a": 0.25},
+                   {"w": 0.78, "forme": "concave", "h0": 2.2, "h1": 0.8},
+                   {"w": 0.10, "forme": "perle", "h0": 0.8, "h1": 0.8, "a": 0.2}]}
+    },
+    {
+      "id": "M-103", "nom": "Blanc galerie", "famille": "blanc",
+      "style": "moderne", "finition": "blanc satiné", "matiere": "bois peint",
+      "largeur_cm": 2.2, "temperature": "neutre", "valeur": "clair",
+      "convient": ["photo", "affiche", "papier"],
+      "description": "Plat, blanc satiné, finition de galerie. S'efface derrière l'œuvre.",
+      "rendu": {"type": "procedural", "matiere": "blanc_satine",
+        "profil": [{"w": 1, "forme": "plat", "h0": 1.8}]}
+    },
+    {
+      "id": "M-104", "nom": "Chêne naturel plat", "famille": "bois_clair",
+      "style": "scandinave", "finition": "chêne huilé", "matiere": "chêne massif",
+      "largeur_cm": 2.6, "temperature": "chaud", "valeur": "clair",
+      "convient": ["photo", "affiche", "papier", "toile"],
+      "description": "Chêne massif huilé, veinage visible. Chaleureux sans être lourd.",
+      "rendu": {"type": "procedural", "matiere": "chene",
+        "profil": [{"w": 1, "forme": "plat", "h0": 2.0}]}
+    },
+    {
+      "id": "M-105", "nom": "Chêne blanchi arrondi", "famille": "bois_clair",
+      "style": "scandinave", "finition": "chêne céruse", "matiere": "chêne massif",
+      "largeur_cm": 3.0, "temperature": "neutre", "valeur": "clair",
+      "convient": ["photo", "affiche", "papier", "toile"],
+      "description": "Chêne cérusé au profil doucement bombé. Lumineux, pour les tons pastel.",
+      "rendu": {"type": "procedural", "matiere": "chene_blanchi",
+        "profil": [{"w": 1, "forme": "bombe", "h0": 1.6, "h1": 1.6, "a": 0.7}]}
+    },
+    {
+      "id": "M-106", "nom": "Noyer demi-rond", "famille": "bois_fonce",
+      "style": "classique", "finition": "noyer ciré", "matiere": "noyer massif",
+      "largeur_cm": 3.5, "temperature": "chaud", "valeur": "fonce",
+      "convient": ["photo", "papier", "toile"],
+      "description": "Noyer ciré au profil demi-rond. Profond et chaud, pour les œuvres riches en bruns et ocres.",
+      "rendu": {"type": "procedural", "matiere": "noyer",
+        "profil": [{"w": 0.85, "forme": "bombe", "h0": 1.4, "h1": 1.8, "a": 1.0},
+                   {"w": 0.15, "forme": "pente", "h0": 1.8, "h1": 1.2}]}
+    },
+    {
+      "id": "M-107", "nom": "Ébène à gradins", "famille": "bois_fonce",
+      "style": "contemporain", "finition": "teinte ébène", "matiere": "frêne teinté",
+      "largeur_cm": 2.8, "temperature": "neutre", "valeur": "fonce",
+      "convient": ["photo", "affiche", "papier", "toile"],
+      "description": "Frêne teinté presque noir, profil à deux gradins. Le grain reste visible.",
+      "rendu": {"type": "procedural", "matiere": "ebene",
+        "profil": [{"w": 0.45, "forme": "plat", "h0": 2.4},
+                   {"w": 0.06, "forme": "pente", "h0": 2.4, "h1": 1.6},
+                   {"w": 0.49, "forme": "plat", "h0": 1.6}]}
+    },
+    {
+      "id": "M-108", "nom": "Caisse américaine érable", "famille": "caisse_americaine",
+      "style": "contemporain", "finition": "érable naturel", "matiere": "érable",
+      "largeur_cm": 1.8, "temperature": "chaud", "valeur": "clair",
+      "convient": ["toile"],
+      "description": "Cadre flottant pour toile sur châssis : la toile semble suspendue, un jour sombre l'entoure.",
+      "rendu": {"type": "procedural", "matiere": "erable",
+        "profil": [{"w": 0.5, "forme": "plat", "h0": 3.5},
+                   {"w": 0.5, "forme": "jour", "h0": 0.2}]}
+    },
+    {
+      "id": "M-109", "nom": "Caisse américaine noire", "famille": "caisse_americaine",
+      "style": "moderne", "finition": "noir mat", "matiere": "bois peint",
+      "largeur_cm": 1.8, "temperature": "neutre", "valeur": "fonce",
+      "convient": ["toile"],
+      "description": "Le cadre flottant le plus sobre : un filet noir et une ombre autour de la toile.",
+      "rendu": {"type": "procedural", "matiere": "noir_mat",
+        "profil": [{"w": 0.5, "forme": "plat", "h0": 3.5},
+                   {"w": 0.5, "forme": "jour", "h0": 0.2}]}
+    },
+    {
+      "id": "M-110", "nom": "Aluminium argent brossé", "famille": "metal",
+      "style": "moderne", "finition": "aluminium brossé", "matiere": "aluminium",
+      "largeur_cm": 1.1, "temperature": "froid", "valeur": "moyen",
+      "convient": ["photo", "affiche"],
+      "description": "Profilé aluminium très fin. Net, technique, pour la photo contemporaine.",
+      "rendu": {"type": "procedural", "matiere": "alu_argent",
+        "profil": [{"w": 1, "forme": "plat", "h0": 2.0}]}
+    },
+    {
+      "id": "M-111", "nom": "Aluminium champagne", "famille": "metal",
+      "style": "moderne", "finition": "aluminium anodisé or pâle", "matiere": "aluminium",
+      "largeur_cm": 1.1, "temperature": "chaud", "valeur": "moyen",
+      "convient": ["photo", "affiche", "papier"],
+      "description": "Profilé fin au reflet doré discret. Une touche de lumière sans ornement.",
+      "rendu": {"type": "procedural", "matiere": "alu_champagne",
+        "profil": [{"w": 1, "forme": "plat", "h0": 2.0}]}
+    },
+    {
+      "id": "M-112", "nom": "Or à la feuille, profil à bec", "famille": "or",
+      "style": "classique", "finition": "feuille d'or patinée", "matiere": "bois doré",
+      "largeur_cm": 4.6, "temperature": "chaud", "valeur": "moyen",
+      "convient": ["papier", "toile"],
+      "description": "Profil classique à perle extérieure et doucine, dorure à la feuille légèrement patinée.",
+      "rendu": {"type": "procedural", "matiere": "or_feuille",
+        "profil": [{"w": 0.16, "forme": "perle", "h0": 2.0, "h1": 2.6, "a": 0.5},
+                   {"w": 0.50, "forme": "concave", "h0": 2.6, "h1": 1.2},
+                   {"w": 0.10, "forme": "perle", "h0": 1.2, "h1": 1.2, "a": 0.25},
+                   {"w": 0.16, "forme": "pente", "h0": 1.2, "h1": 0.7},
+                   {"w": 0.08, "forme": "perle", "h0": 0.7, "h1": 0.6, "a": 0.18}]}
+    },
+    {
+      "id": "M-113", "nom": "Argent patiné à gorge", "famille": "argent",
+      "style": "classique", "finition": "feuille d'argent patinée", "matiere": "bois argenté",
+      "largeur_cm": 4.0, "temperature": "froid", "valeur": "moyen",
+      "convient": ["photo", "papier", "toile"],
+      "description": "Gorge argentée à patine grise. Classique mais frais, pour les bleus et les gris.",
+      "rendu": {"type": "procedural", "matiere": "argent_feuille",
+        "profil": [{"w": 0.14, "forme": "perle", "h0": 2.2, "h1": 2.2, "a": 0.35},
+                   {"w": 0.74, "forme": "concave", "h0": 2.2, "h1": 0.9},
+                   {"w": 0.12, "forme": "perle", "h0": 0.9, "h1": 0.8, "a": 0.22}]}
+    },
+    {
+      "id": "M-114", "nom": "Cassetta noir et or", "famille": "musee",
+      "style": "musée", "finition": "panneau noir, filets dorés", "matiere": "bois peint et doré",
+      "largeur_cm": 6.0, "temperature": "chaud", "valeur": "fonce",
+      "convient": ["papier", "toile"],
+      "description": "Inspiré des cadres « cassetta » italiens : large panneau plat noir entre deux filets dorés.",
+      "rendu": {"type": "procedural", "matiere": "noir_mat", "matiere_2": "or_feuille",
+        "profil": [{"w": 0.10, "forme": "perle", "h0": 2.6, "h1": 2.6, "a": 0.35, "matiere": 2},
+                   {"w": 0.04, "forme": "pente", "h0": 2.6, "h1": 2.0},
+                   {"w": 0.68, "forme": "plat", "h0": 2.0},
+                   {"w": 0.04, "forme": "pente", "h0": 2.0, "h1": 2.3},
+                   {"w": 0.14, "forme": "perle", "h0": 2.3, "h1": 1.4, "a": 0.3, "matiere": 2}]}
+    },
+    {
+      "id": "M-115", "nom": "Bois de grange", "famille": "rustique",
+      "style": "rustique", "finition": "bois vieilli gris", "matiere": "pin récupéré",
+      "largeur_cm": 4.2, "temperature": "neutre", "valeur": "moyen",
+      "convient": ["photo", "affiche", "toile"],
+      "description": "Planche plate au bois grisé et usé. Pour les paysages et les ambiances de campagne.",
+      "rendu": {"type": "procedural", "matiere": "grange",
+        "profil": [{"w": 1, "forme": "bombe", "h0": 1.8, "h1": 1.8, "a": 0.15}]}
+    },
+    {
+      "id": "M-201", "nom": "Doré Empire à rosaces", "famille": "or",
+      "style": "classique", "finition": "dorure à la feuille, frise de rosaces", "matiere": "bois doré",
+      "largeur_cm": 6.5, "temperature": "chaud", "valeur": "moyen",
+      "convient": ["toile", "papier"],
+      "description": "D'après un cadre doré de style Empire (vers 1824), ponctué de rosaces. Pour les peintures figuratives et les sujets classiques.",
+      "photo": "Sailko, Wikimedia Commons, CC BY 3.0",
+      "rendu": {"type": "image", "src": "assets/cadres/empire_dore.png", "repetition": "arrondir", "relief_cm": 2.5}
+    },
+    {
+      "id": "M-202", "nom": "Cassetta noyer et or sculpté", "famille": "ancien",
+      "style": "musée", "finition": "noyer, moulures dorées sculptées", "matiere": "noyer et dorure",
+      "largeur_cm": 7.0, "temperature": "chaud", "valeur": "fonce",
+      "convient": ["toile", "papier"],
+      "description": "D'après une cassetta vénitienne du XVIᵉ siècle : noyer sombre et rangs de perles dorées. Pour les œuvres anciennes, les icônes et les fonds dorés.",
+      "photo": "The Metropolitan Museum of Art, CC0",
+      "rendu": {"type": "image", "src": "assets/cadres/noyer_cassetta.jpg", "repetition": "arrondir", "relief_cm": 2.5,
+        "recadre": {"x": 3, "y": 3, "l": 1394, "h": 1868},
+        "tranche": {"gauche": 212, "droite": 211, "haut": 212, "bas": 211}}
+    },
+    {
+      "id": "M-203", "nom": "Ébène à filet perlé", "famille": "noir",
+      "style": "classique", "finition": "ébène, filet de perles doré", "matiere": "placage d'ébène",
+      "largeur_cm": 4.5, "temperature": "neutre", "valeur": "fonce",
+      "convient": ["photo", "papier", "toile"],
+      "description": "D'après un cadre hollandais du XVIIᵉ siècle : large plat d'ébène et fine frise de perles contre l'œuvre. Sobre et précieux.",
+      "photo": "The Metropolitan Museum of Art, CC0",
+      "rendu": {"type": "image", "src": "assets/cadres/ebene_filet.jpg", "repetition": "arrondir", "relief_cm": 1.8,
+        "teinte": {"sombre": [14, 11, 9], "clair": [228, 196, 128], "gamma": 1.6},
+        "recadre": {"x": 36, "y": 58, "l": 1314, "h": 1588},
+        "tranche": {"gauche": 214, "droite": 205, "haut": 207, "bas": 206}}
+    },
+    {
+      "id": "M-204", "nom": "Érable moucheté", "famille": "bois_clair",
+      "style": "classique", "finition": "placage d'érable moucheté", "matiere": "érable",
+      "largeur_cm": 2.2, "temperature": "chaud", "valeur": "clair",
+      "convient": ["photo", "papier", "affiche", "toile"],
+      "description": "D'après un cadre Biedermeier (Munich, vers 1835) : baguette plate en érable moucheté, d'une grande simplicité.",
+      "photo": "The Metropolitan Museum of Art, CC0",
+      "rendu": {"type": "image", "src": "assets/cadres/erable_biedermeier.jpg", "repetition": "etirer", "relief_cm": 1.0,
+        "teinte": {"sombre": [96, 58, 28], "clair": [240, 212, 160], "bas": 60, "haut": 230, "gamma": 0.9},
+        "recadre": {"x": 204, "y": 168, "l": 1303, "h": 1648},
+        "tranche": {"gauche": 68, "droite": 70, "haut": 67, "bas": 69}}
+    }
+  ]
+}

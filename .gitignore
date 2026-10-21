@@ -1,0 +1,11 @@
+# secrets et traces locales
+.env
+journal_ia.jsonl
+__pycache__/
+
+# photos téléchargées mais non retenues au catalogue, et originaux pleine taille
+assets/cadres/originaux/
+assets/cadres/argent_cassetta.jpg
+assets/cadres/baroque.jpg
+assets/cadres/dore_lauriers.jpg
+assets/cadres/dore_vieilli.jpg
