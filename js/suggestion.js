@@ -112,11 +112,16 @@
     const val = a.luminosite < 0.35 ? "une œuvre plutôt sombre" : a.luminosite > 0.65 ? "une œuvre lumineuse" : "des valeurs moyennes";
     const con = a.contraste > 0.24 ? "au contraste marqué" : a.contraste < 0.12 ? "au contraste doux" : "";
     const sat = !a.mono && a.saturation > 0.45 ? ", aux couleurs vives" : !a.mono && a.saturation < 0.2 ? ", aux couleurs sourdes" : "";
-    return `On voit ${morceaux.join(" ")}, ${val}${con ? " " + con : ""}${sat}.`;
+    // l'interface la présente sous « Ce que nous voyons : »
+    const phrase = `${morceaux.join(" ")}, ${val}${con ? " " + con : ""}${sat}.`;
+    return phrase.charAt(0).toUpperCase() + phrase.slice(1);
   }
 
   // ---- Choix local ------------------------------------------------------------
   const STYLES_SOBRES = ["moderne", "contemporain", "scandinave"];
+
+  // « autre » accepte toute moulure sauf la caisse américaine, faite pour la toile.
+  const compatible = (m, type) => (type === "autre" ? m.famille !== "caisse_americaine" : m.convient.includes(type));
 
   function noter(m, a, type, cm) {
     let s = 0;
@@ -124,7 +129,7 @@
     const ajoute = (pts, texte) => { s += pts; if (texte && pts > 0) raisons.push({ pts, texte }); };
     const long = Math.max(cm.l, cm.h);
 
-    ajoute(m.convient.includes(type) ? 1 : -6);
+    ajoute(compatible(m, type) ? 1 : -6);
     if (m.famille === "caisse_americaine" && type === "toile")
       ajoute(2.5, "Cadre flottant : la toile reste visible jusqu'à ses bords, sans vitre, comme suspendue.");
 
@@ -239,7 +244,7 @@
     if (q.presence) {
       poses++;
       const c = def("presence", q.presence);
-      if (m.largeur_cm >= (c.min_cm ?? 0) && m.largeur_cm <= (c.max_cm ?? 99)) { tenus++; pts += 2; dits.push(nom("presence", q.presence)); }
+      if (m.largeur_cm >= (c.min_cm ?? 0) && m.largeur_cm <= (c.max_cm ?? 99)) { tenus++; pts += 2; dits.push("largeur " + nom("presence", q.presence)); }
       else pts -= 1.5;
     }
     let depassement = 0;
@@ -267,7 +272,7 @@
     const notes = cat.moulures.map((m) => {
       const n = noter(m, a, type, cm), p = noterPrefs(m, q, crit);
       const raison = p.dits.length ? `Comme vous le souhaitez : ${p.dits.join(", ")}. ${n.raison}` : n.raison;
-      return { m, raison, score: n.score + p.pts, conformite: p.conformite, depassement: p.depassement, compatible: m.convient.includes(type) };
+      return { m, raison, score: n.score + p.pts, conformite: p.conformite, depassement: p.depassement, compatible: compatible(m, type) };
     }).sort((x, y) => (y.conformite - x.conformite) || (y.score - x.score));
 
     const pris = [], compte = {};
@@ -346,5 +351,5 @@
     return choisirLocal(cat, a, type, cm, prefs);
   }
 
-  window.Suggestion = { analyser, proposer, etatServeur, choisirLocal };
+  window.Suggestion = { analyser, proposer, etatServeur, choisirLocal, compatible };
 })();

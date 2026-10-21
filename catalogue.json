@@ -26,18 +26,18 @@
       {"id": "argente",    "nom": "Argenté",    "couleur": "#b9bcbf"}
     ],
     "presence": [
-      {"id": "discret",   "nom": "Discret, fin",   "max_cm": 2.2},
-      {"id": "equilibre", "nom": "Équilibré",      "min_cm": 2.3, "max_cm": 4.0},
-      {"id": "affirme",   "nom": "Affirmé, large", "min_cm": 4.1}
+      {"id": "discret",   "nom": "Fine",    "detail": "1 à 2 cm",       "max_cm": 2.2},
+      {"id": "equilibre", "nom": "Moyenne", "detail": "2 à 4 cm",       "min_cm": 2.3, "max_cm": 4.0},
+      {"id": "affirme",   "nom": "Large",   "detail": "4 cm et plus",   "min_cm": 4.1}
     ],
     "passe": [
       {"id": "avec", "nom": "Avec"},
       {"id": "sans", "nom": "Sans"}
     ],
     "budget": [
-      {"id": "economique",    "nom": "Économique",    "gamme_max": 1},
-      {"id": "intermediaire", "nom": "Intermédiaire", "gamme_max": 2},
-      {"id": "libre",         "nom": "Sans limite",   "gamme_max": 3}
+      {"id": "economique",    "nom": "Économique",    "detail": "gamme 1", "gamme_max": 1},
+      {"id": "intermediaire", "nom": "Intermédiaire", "detail": "gammes 1 et 2", "gamme_max": 2},
+      {"id": "libre",         "nom": "Sans limite",   "detail": "toutes les gammes", "gamme_max": 3}
     ],
     "interieur": [
       {"id": "epure",      "nom": "Épuré, moderne",       "styles": ["moderne", "galerie"],     "teintes": ["noir", "blanc", "argente"]},

@@ -3,154 +3,250 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Essayez votre cadre</title>
+  <title>Encadrement Simon B — Trouvez votre cadre</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20261021d">
+  <link rel="stylesheet" href="css/style.css?v=20261021e">
 </head>
 <body>
   <header class="entete">
     <div class="marque">
-      <span class="marque-nom">Atelier d'encadrement</span>
-      <span class="marque-client">[nom de l'atelier]</span>
+      <span class="marque-nom">Encadrement Simon B</span>
+      <span class="marque-client">par Arthotèque</span>
     </div>
     <span class="badge">Prototype</span>
   </header>
 
-  <div id="alerte" class="alerte" hidden></div>
+  <!-- Les trois étapes du parcours -->
+  <nav class="etapes-nav" aria-label="Étapes">
+    <ol>
+      <li><button type="button" data-aller="1"><span class="num">1</span><span class="lib">Votre œuvre</span></button></li>
+      <li><button type="button" data-aller="2" disabled><span class="num">2</span><span class="lib">Vos encadrements</span></button></li>
+      <li><button type="button" data-aller="3" disabled><span class="num">3</span><span class="lib">Votre demande</span></button></li>
+    </ol>
+  </nav>
+
+  <div id="alerte" class="alerte" role="alert" hidden></div>
 
   <main>
-    <!-- 1. Dépôt de la photo -->
-    <section id="etape-depot" class="accueil">
-      <p class="surtitre">Essayage en ligne</p>
-      <h1>Voyez votre œuvre encadrée<br>avant de passer à l'atelier.</h1>
-      <p class="chapeau">Déposez une photo de votre œuvre. Nous vous proposons six cadres choisis pour elle, et vous voyez le résultat tout de suite.</p>
+    <!-- 1. Votre œuvre ------------------------------------------------------>
+    <section class="etape etape-oeuvre" data-etape="1">
+      <div class="intro">
+        <h1>Trouvez le cadre qui met votre œuvre en valeur</h1>
+        <p class="chapeau">Importez une photo. Découvrez nos suggestions. Ajustez votre encadrement.</p>
+      </div>
 
-      <label id="depot" class="depot">
-        <input id="fichier" type="file" accept="image/*">
-        <svg class="depot-icone" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="10" width="36" height="28" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="11" y="15" width="26" height="18" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M14 30l6-7 5 5 3-3 6 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-        <strong>Déposez une photo de votre œuvre</strong>
-        <span>ou touchez ici pour en choisir une</span>
-      </label>
+      <!-- La photo s'affiche dans la zone même où on l'importe -->
+      <div id="zone" class="zone">
+        <input id="fichier" class="cache-visuel" type="file" accept="image/*" tabindex="-1" aria-hidden="true">
+        <div class="zone-vide">
+          <svg class="zone-icone" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="10" width="36" height="28" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="11" y="15" width="26" height="18" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M14 30l6-7 5 5 3-3 6 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <button type="button" id="btn-importer" class="principal grand">Importer mon œuvre</button>
+          <p class="zone-aide"><span class="si-souris">ou glissez-déposez une photo ici · </span>JPG ou PNG, prise de face si possible</p>
+        </div>
+        <div class="zone-image" hidden>
+          <canvas id="apercu-oeuvre" aria-label="Votre œuvre"></canvas>
+          <div class="zone-outils">
+            <button type="button" id="btn-recadrer" class="outil">Recadrer</button>
+            <button type="button" id="btn-remplacer" class="outil">Remplacer</button>
+          </div>
+        </div>
+        <div class="zone-depot" aria-hidden="true">Déposez la photo</div>
+      </div>
 
       <!-- œuvres d'exemple : cachées au public, visibles avec ?demo dans l'adresse -->
       <div id="exemples" class="exemples" hidden>
         <span>Démonstration :</span>
-        <button type="button" class="puce" data-exemple="couleurs">Champs de couleur</button>
-        <button type="button" class="puce" data-exemple="paysage">Paysage</button>
-        <button type="button" class="puce" data-exemple="photo">Photo noir et blanc</button>
+        <button type="button" class="lien" data-exemple="couleurs">Champs de couleur</button>
+        <button type="button" class="lien" data-exemple="paysage">Paysage</button>
+        <button type="button" class="lien" data-exemple="photo">Photo noir et blanc</button>
       </div>
-      <p class="note">Votre photo sert seulement à proposer les cadres. Elle n'est pas conservée.</p>
 
-      <div id="preferences" class="preferences">
-        <div class="pref-tete">
-          <h3>Vos goûts <span>(facultatif)</span></h3>
-          <button type="button" id="prefs-effacer" class="lien" hidden>Tout effacer</button>
+      <div id="oeuvre-details" class="oeuvre-details" hidden>
+        <fieldset class="bloc">
+          <legend>Quel type d'œuvre ?</legend>
+          <div id="types" class="choix" role="group" aria-describedby="type-erreur"></div>
+          <p id="type-erreur" class="erreur" hidden>Choisissez le type d'œuvre : il détermine les cadres possibles.</p>
+        </fieldset>
+
+        <div class="bloc">
+          <span class="bloc-titre">Dimensions <span class="facultatif">(facultatif)</span></span>
+          <div class="dims">
+            <label class="champ"><span>Largeur</span><span class="unite"><input id="larg" type="number" min="5" max="300" step="0.5" inputmode="decimal" placeholder="—">cm</span></label>
+            <span class="fois" aria-hidden="true">×</span>
+            <label class="champ"><span>Hauteur</span><span class="unite"><input id="haut" type="number" min="5" max="300" step="0.5" inputmode="decimal" placeholder="—">cm</span></label>
+          </div>
+          <p class="aide" id="dims-aide">Sans dimensions, l'aperçu suppose 50 cm sur le plus grand côté. Vous donnerez les mesures réelles dans la demande de soumission.</p>
         </div>
-        <p class="aide">Ne cochez rien pour laisser l'IA choisir d'après l'œuvre. Chaque précision oriente les propositions. Vous pouvez remplir ce bloc avant ou après la photo.</p>
-        <div class="pref-grille">
-          <div class="pref" data-critere="styles"><span class="pref-titre">Style du cadre</span><div class="choix"></div></div>
-          <div class="pref" data-critere="teintes"><span class="pref-titre">Teinte</span><div class="choix"></div></div>
-          <div class="pref" data-critere="presence" data-unique><span class="pref-titre">Présence</span><div class="choix"></div></div>
-          <div class="pref" data-critere="passe" data-unique><span class="pref-titre">Passe-partout</span><div class="choix"></div></div>
-          <div class="pref" data-critere="budget" data-unique><span class="pref-titre">Budget</span><div class="choix"></div></div>
-          <div class="pref" data-critere="interieur" data-unique><span class="pref-titre">La pièce où il sera accroché</span><div class="choix"></div></div>
+
+        <details id="envies" class="envies">
+          <summary><span>Préciser mes envies <span class="facultatif">(facultatif)</span></span><span id="envies-compte" class="pastille-compte" hidden></span></summary>
+          <div class="envies-corps">
+            <p class="aide">Sans précision, nous choisissons d'après votre œuvre.</p>
+            <div class="pref" data-critere="styles"><span class="bloc-titre">Style</span><div class="choix"></div></div>
+            <div class="pref" data-critere="teintes"><span class="bloc-titre">Couleur du cadre</span><div class="choix"></div></div>
+            <div class="pref" data-critere="budget" data-unique>
+              <span class="bloc-titre">Budget</span><div class="choix"></div>
+              <p class="aide">Gammes indicatives : le prix exact dépend des dimensions et vous est confirmé dans la soumission.</p>
+            </div>
+            <details class="plus">
+              <summary>Plus d'options</summary>
+              <div class="pref" data-critere="presence" data-unique data-illustre><span class="bloc-titre">Largeur du cadre</span><div class="choix"></div></div>
+              <div class="pref" data-critere="passe" data-unique><span class="bloc-titre">Passe-partout</span><div class="choix"></div></div>
+              <div class="pref" data-critere="interieur" data-unique><span class="bloc-titre">La pièce où l'œuvre sera accrochée</span><div class="choix"></div></div>
+              <label class="champ pref-texte">
+                <span class="bloc-titre">En quelques mots</span>
+                <textarea id="prefs-texte" rows="2" maxlength="280" placeholder="Ex. : c'est un cadeau, elle aime le doré ; pour un chalet ; un cadre très discret…"></textarea>
+                <small id="prefs-compte" class="compte">0 / 280</small>
+              </label>
+            </details>
+            <button type="button" id="prefs-effacer" class="lien" hidden>Effacer mes envies</button>
+          </div>
+        </details>
+
+        <div class="lancer">
+          <button type="button" id="btn-voir" class="principal grand">Voir mes encadrements</button>
         </div>
-        <label class="champ pref-texte">
-          <span>En quelques mots</span>
-          <textarea id="prefs-texte" rows="2" maxlength="280" placeholder="Ex. : c'est un cadeau, elle aime le doré ; pour un chalet ; je veux un cadre très discret…"></textarea>
-          <small id="prefs-compte" class="compte">0 / 280</small>
-        </label>
       </div>
+
+      <p id="note-photo" class="note"></p>
     </section>
 
-    <!-- 2. L'œuvre -->
-    <section id="etape-oeuvre" class="oeuvre" hidden>
-      <div class="oeuvre-image">
-        <canvas id="apercu-oeuvre"></canvas>
-        <div class="oeuvre-outils">
-          <button type="button" id="btn-recadrer" class="lien">Recadrer</button>
-          <button type="button" id="btn-changer" class="lien">Changer de photo</button>
-        </div>
-      </div>
-      <div class="oeuvre-reglages">
-        <h2>Votre œuvre</h2>
-        <label class="champ">
-          <span>Type d'œuvre</span>
-          <select id="type">
-            <option value="toile">Peinture sur toile (châssis)</option>
-            <option value="papier">Œuvre sur papier (dessin, aquarelle, gravure)</option>
-            <option value="photo">Photographie</option>
-            <option value="affiche">Affiche ou reproduction</option>
-          </select>
-        </label>
-        <div class="dims">
-          <label class="champ"><span>Largeur</span><span class="unite"><input id="larg" type="number" min="5" max="300" step="0.5" inputmode="decimal">cm</span></label>
-          <span class="fois">×</span>
-          <label class="champ"><span>Hauteur</span><span class="unite"><input id="haut" type="number" min="5" max="300" step="0.5" inputmode="decimal">cm</span></label>
-        </div>
-        <p class="aide">Les proportions de la photo sont conservées. Mesurez la partie visible de l'œuvre.</p>
-      </div>
-
-      <div class="lancer">
-        <p id="rappel-gouts" class="rappel"></p>
-        <button type="button" id="btn-proposer" class="principal">Proposer six cadres</button>
-      </div>
-    </section>
-
-    <!-- 3. Les propositions -->
-    <section id="etape-resultats" class="resultats" hidden>
-      <div class="analyse">
-        <h2>Six cadres pour votre œuvre</h2>
-        <p id="lecture" class="lecture"></p>
-        <div id="palette" class="palette" aria-label="Couleurs dominantes"></div>
-        <p id="mode" class="mode"></p>
-        <p id="gouts" class="gouts" hidden></p>
-      </div>
-
-      <div class="atelier">
-        <div id="scene-boite" class="scene"><canvas id="scene"></canvas></div>
-        <aside class="panneau">
-          <p class="ref" id="choix-ref"></p>
-          <h3 id="choix-nom"></h3>
-          <p id="choix-desc" class="desc"></p>
-          <div id="choix-raison" class="raison"></div>
-          <dl id="choix-fiche" class="fiche"></dl>
-
-          <div class="reglage" id="reglage-pp">
-            <span class="reglage-titre">Passe-partout</span>
-            <div id="pp-choix" class="pastilles"></div>
-            <label class="curseur"><span>Largeur</span><input id="pp-cm" type="range" min="3" max="12" step="0.5"><output id="pp-cm-val"></output></label>
-            <p id="pp-note" class="aide" hidden>Une caisse américaine se pose sans passe-partout ni verre.</p>
+    <!-- 2. Vos encadrements ------------------------------------------------>
+    <section class="etape etape-encadrements" data-etape="2" hidden>
+      <div class="resultat">
+        <div class="col-apercu">
+          <div class="apercu-colle">
+            <div id="apercu-boite" class="apercu">
+              <canvas id="scene" aria-label="Aperçu de l'œuvre encadrée"></canvas>
+              <div id="chargement" class="chargement" hidden role="status" aria-live="polite">
+                <div class="barre"><span></span></div>
+                <ol class="etapes-calcul">
+                  <li data-pas="1">Lecture de votre œuvre</li>
+                  <li data-pas="2">Choix des moulures</li>
+                  <li data-pas="3">Préparation des aperçus</li>
+                </ol>
+              </div>
+            </div>
+            <p class="simulation">Simulation indicative : votre œuvre n'est pas modifiée, seul l'encadrement est ajouté. <span id="note-dims"></span></p>
           </div>
-          <div class="reglage">
-            <span class="reglage-titre">Couleur du mur</span>
-            <div id="mur-choix" class="pastilles"></div>
+        </div>
+
+        <div class="col-panneau">
+          <p id="lecture" class="lecture"></p>
+          <div id="avis" class="avis" hidden></div>
+
+          <h2 class="titre-section">Nos suggestions</h2>
+          <div id="suggestions" class="suggestions"></div>
+          <button type="button" id="btn-plus-idees" class="secondaire" hidden>Voir trois autres idées</button>
+
+          <div id="bloc-hors-budget" class="hors-budget" hidden>
+            <h3>Au-delà de votre budget</h3>
+            <p class="aide">Ces cadres dépassent la gamme choisie ; le dépassement est indiqué sur chacun.</p>
+            <div id="suggestions-hors" class="suggestions"></div>
           </div>
-          <label class="bascule"><input id="vitre" type="checkbox"> Verre (reflet)</label>
+
+          <div class="reglages">
+            <div id="reglage-pp" class="reglage">
+              <span class="bloc-titre">Passe-partout</span>
+              <div id="pp-choix" class="choix"></div>
+            </div>
+            <div class="reglage">
+              <span class="bloc-titre">Couleur du mur</span>
+              <div id="mur-choix" class="choix murs"></div>
+            </div>
+            <details id="plus-reglages" class="plus">
+              <summary>Plus de réglages</summary>
+              <label id="reglage-pp-cm" class="curseur"><span>Largeur du passe-partout</span><input id="pp-cm" type="range" min="3" max="12" step="0.5"><output id="pp-cm-val"></output></label>
+              <label id="reglage-vitre" class="bascule"><input id="vitre" type="checkbox"> Montrer le reflet du verre</label>
+              <p id="note-flottant" class="aide" hidden>Une caisse américaine se pose sans passe-partout ni verre : la toile reste à nu.</p>
+            </details>
+            <details id="details-cadre" class="plus">
+              <summary>Détails du cadre</summary>
+              <dl id="fiche" class="fiche"></dl>
+            </details>
+          </div>
 
           <div class="actions">
-            <button type="button" id="btn-soumission" class="principal">Demander une soumission</button>
-            <button type="button" id="btn-telecharger" class="secondaire">Télécharger l'image</button>
+            <button type="button" id="btn-soumission" class="principal grand">Obtenir une soumission pour ce cadre</button>
+            <button type="button" id="btn-telecharger" class="secondaire">Télécharger l'aperçu</button>
           </div>
-        </aside>
+          <p class="liens">
+            <button type="button" id="lien-envies" class="lien">Modifier mes envies</button>
+          </p>
+
+          <details class="plus catalogue">
+            <summary>Parcourir tous les cadres compatibles</summary>
+            <div id="catalogue" class="catalogue-grille"></div>
+          </details>
+        </div>
       </div>
+    </section>
 
-      <h3 class="titre-grille">Les six propositions</h3>
-      <div id="grille" class="grille"></div>
+    <!-- 3. Votre demande --------------------------------------------------->
+    <section class="etape etape-demande" data-etape="3" hidden>
+      <div class="demande">
+        <aside class="demande-resume">
+          <canvas id="miniature" aria-label="Aperçu choisi"></canvas>
+          <dl id="resume" class="fiche"></dl>
+          <button type="button" id="retour-encadrements" class="lien">Modifier l'encadrement</button>
+        </aside>
 
-      <details class="catalogue">
-        <summary>Essayer une autre moulure du catalogue</summary>
-        <div id="catalogue" class="catalogue-grille"></div>
-      </details>
+        <div class="demande-droite">
+          <form id="form-demande" class="demande-form" novalidate>
+            <h2>Votre demande de soumission</h2>
+            <p class="aide">L'atelier reçoit votre aperçu et les choix ci-contre. Il ne manque que ceci :</p>
+
+            <fieldset id="f-dims" class="bloc">
+              <legend>Dimensions réelles de l'œuvre</legend>
+              <div class="dims">
+                <label class="champ"><span>Largeur *</span><span class="unite"><input id="d-larg" name="largeur" type="number" min="5" max="300" step="0.5" inputmode="decimal" required>cm</span></label>
+                <span class="fois" aria-hidden="true">×</span>
+                <label class="champ"><span>Hauteur *</span><span class="unite"><input id="d-haut" name="hauteur" type="number" min="5" max="300" step="0.5" inputmode="decimal" required>cm</span></label>
+              </div>
+              <p class="aide">Mesurez la partie visible de l'œuvre. Le prix en dépend.</p>
+            </fieldset>
+
+            <label class="champ"><span>Nom *</span><input name="nom" type="text" autocomplete="name" required></label>
+            <label class="champ"><span>Courriel *</span><input name="courriel" type="email" autocomplete="email" required></label>
+            <label class="champ"><span>Téléphone <span class="facultatif">(facultatif)</span></span><input name="tel" type="tel" autocomplete="tel"></label>
+            <label class="champ"><span>Précisions <span class="facultatif">(facultatif)</span></span><textarea name="message" rows="3" placeholder="Délai souhaité, question sur le verre, livraison…"></textarea></label>
+            <label class="case"><input name="consentement" type="checkbox" required> J'accepte que l'atelier me contacte au sujet de cette demande.</label>
+
+            <div class="actions">
+              <button type="submit" class="principal grand">Envoyer ma demande</button>
+            </div>
+            <p class="aide">Prototype : le formulaire n'envoie encore rien.</p>
+          </form>
+
+          <div id="confirmation" class="confirmation" hidden tabindex="-1">
+            <div class="confirmation-icone" aria-hidden="true">✓</div>
+            <h2>Merci, votre demande est prête</h2>
+            <p id="confirmation-texte"></p>
+            <h3>La suite</h3>
+            <ol>
+              <li>L'atelier vérifie les dimensions et la faisabilité.</li>
+              <li>Il vous envoie un prix précis par courriel.</li>
+              <li>Vous passez voir les échantillons avant de confirmer, si vous le souhaitez.</li>
+            </ol>
+            <p class="aide">Prototype : rien n'a été envoyé. Sur le site final, l'atelier reçoit la demande avec l'aperçu.</p>
+            <button type="button" id="nouvelle-oeuvre" class="secondaire">Encadrer une autre œuvre</button>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
+  <!-- Barre d'action en bas de l'écran sur téléphone (étape 2) -->
+  <div id="barre-mobile" class="barre-mobile" hidden>
+    <button type="button" id="btn-soumission-mobile" class="principal">Obtenir une soumission</button>
+  </div>
+
   <!-- Recadrage -->
   <div id="recadrage" class="modale" hidden>
-    <div class="modale-boite">
-      <h3>Recadrer la photo</h3>
+    <div class="modale-boite" role="dialog" aria-modal="true" aria-labelledby="rc-titre">
+      <h3 id="rc-titre">Recadrer la photo</h3>
       <p class="aide">Gardez seulement l'œuvre : tirez les coins pour enlever le mur ou la table autour.</p>
       <div id="rc-scene" class="rc-scene">
         <canvas id="rc-canvas"></canvas>
@@ -167,26 +263,18 @@
     </div>
   </div>
 
-  <!-- Soumission (maquette) -->
-  <dialog id="soumission" class="dialogue">
-    <h3>Demande de soumission</h3>
-    <dl id="soumission-resume" class="fiche"></dl>
-    <p class="aide">Dans le site final, ce formulaire envoie la demande et l'image à l'atelier. Le prototype n'envoie rien.</p>
-    <form method="dialog"><button class="principal">Fermer</button></form>
-  </dialog>
-
   <footer class="pied">
-    <p>Prototype. Le catalogue est fictif : il imite des moulures courantes du marché, en attendant les moulures réelles de l'atelier.</p>
+    <p>Prototype. Le catalogue est fictif : il imite des moulures courantes, en attendant les moulures réelles de l'atelier.</p>
     <p><a href="credits.html">Crédits des images</a></p>
   </footer>
 
   <!-- ?v= : à changer à chaque mise en ligne, pour que les navigateurs
        rechargent les scripts au lieu de garder l'ancienne version. -->
-  <script src="js/config.js?v=20261021d"></script>
-  <script src="js/matieres.js?v=20261021d"></script>
-  <script src="js/rendu.js?v=20261021d"></script>
-  <script src="js/suggestion.js?v=20261021d"></script>
-  <script src="js/exemples.js?v=20261021d"></script>
-  <script src="js/app.js?v=20261021d"></script>
+  <script src="js/config.js?v=20261021e"></script>
+  <script src="js/matieres.js?v=20261021e"></script>
+  <script src="js/rendu.js?v=20261021e"></script>
+  <script src="js/suggestion.js?v=20261021e"></script>
+  <script src="js/exemples.js?v=20261021e"></script>
+  <script src="js/app.js?v=20261021e"></script>
 </body>
 </html>

@@ -1,11 +1,38 @@
-# Essayage de cadres en ligne — prototype
-
-Le visiteur dépose la photo de son œuvre. Le site lui propose six moulures, puis
-lui montre l'œuvre encadrée. Il peut changer le passe-partout, la couleur du mur
-et le verre, télécharger l'image et demander une soumission.
+# Encadrement Simon B, par Arthotèque — prototype d'essayage en ligne
 
 **L'œuvre n'est jamais retouchée.** Le cadre est dessiné en calques par-dessus
-elle, dans le navigateur (`js/rendu.js`).
+elle, dans le navigateur (`js/rendu.js`). L'interface le présente comme une
+simulation indicative.
+
+## Le parcours, en trois étapes
+
+1. **Votre œuvre**
+   - La photo s'affiche dans la zone même où on l'importe, avec « Recadrer » et
+     « Remplacer ».
+   - Le type d'œuvre est demandé (toile sur châssis, affiche, photographie,
+     œuvre sur papier, autre). Les dimensions sont facultatives : sans elles,
+     l'aperçu suppose 50 cm sur le plus grand côté et le dit.
+   - Les envies se règlent dans un panneau replié, « Préciser mes envies ».
+2. **Vos encadrements**
+   - Grand aperçu à gauche (en haut sur téléphone), suggestions et réglages à
+     droite.
+   - Trois propositions distinctes, puis « Voir trois autres idées ».
+   - Les cadres au-delà du budget sont à part, avec leur dépassement indiqué.
+     Si aucun ne tient dans le budget, le site le dit et propose d'élargir.
+   - Ce qui n'a pas de sens est caché : pas de passe-partout pour une toile,
+     ni de verre pour une caisse américaine.
+3. **Votre demande**
+   - Le formulaire reprend l'œuvre, le cadre et les options choisis.
+   - Il ne demande que les coordonnées, plus les dimensions réelles si elles
+     manquent.
+   - Une confirmation explique la suite. Le prototype n'envoie encore rien.
+
+**Ce que la page dit de la photo suit le fonctionnement réel :**
+- Avec l'IA, une version réduite part chez OpenAI. Les requêtes portent
+  `store: false`, donc OpenAI ne les enregistre pas. OpenAI peut toutefois les
+  garder jusqu'à 30 jours pour surveiller les abus, et ne s'en sert pas pour
+  entraîner ses modèles.
+- Sans l'IA, la photo ne quitte pas le navigateur.
 
 ## Lancer en local
 
@@ -58,14 +85,14 @@ https://magellanpic.github.io/encadrement-prototype/?demo
 
 ## Les goûts du visiteur
 
-Sur la page d'accueil, sous la zone photo, le bloc « Vos goûts » est
-entièrement facultatif. Il se remplit avant ou après la photo, et il est
-rappelé à côté du bouton « Proposer six cadres ». Si le visiteur ne coche rien,
-l'IA décide d'après l'œuvre. Il peut préciser :
+Le panneau replié « Préciser mes envies » est entièrement facultatif. Ouvert,
+il montre d'abord le style, la couleur et le budget (des gammes indicatives,
+faute de prix réels). Le reste est sous « Plus d'options ». Si le visiteur ne
+coche rien, l'IA décide d'après l'œuvre. Il peut préciser :
 
 - le style du cadre ;
 - la teinte ;
-- la présence (largeur) ;
+- la largeur du cadre (fine, moyenne, large, illustrées) ;
 - le passe-partout ;
 - le budget ;
 - la pièce où l'œuvre sera accrochée ;

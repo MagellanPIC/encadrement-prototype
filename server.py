@@ -88,7 +88,15 @@ def journaliser(entree: dict) -> None:
 CONSIGNE = (RACINE / "ia" / "consigne.txt").read_text(encoding="utf-8").strip()
 
 TYPES = {"toile": "painting on stretched canvas", "papier": "work on paper",
-         "photo": "photograph", "affiche": "poster or reproduction"}
+         "photo": "photograph", "affiche": "poster or reproduction",
+         "autre": "other (object, textile, mixed media)"}
+
+
+def compatible(m: dict, type_oeuvre: str) -> bool:
+    """« autre » accepte toute moulure sauf la caisse américaine, faite pour la toile."""
+    if type_oeuvre == "autre":
+        return m["famille"] != "caisse_americaine"
+    return type_oeuvre in m["convient"]
 
 
 def schema(cat: dict) -> dict:
@@ -224,6 +232,8 @@ def suggerer(demande: dict) -> dict:
                             "strict": True, "schema": schema(cat)}},
         "reasoning": {"effort": "low"},
         "max_output_tokens": 2500,
+        # sans ce champ, l'API garde la requête 30 jours (photo comprise)
+        "store": False,
     }
     try:
         try:
@@ -257,7 +267,7 @@ def suggerer(demande: dict) -> dict:
     vus, garde = set(), []
     for s in res.get("suggestions", []):
         m = par_id.get(s.get("id"))
-        if not m or m["id"] in vus or type_oeuvre not in m["convient"]:
+        if not m or m["id"] in vus or not compatible(m, type_oeuvre):
             continue
         if type_oeuvre == "toile" or m["famille"] == "caisse_americaine" or prefs["passe"] == "sans":
             s["passe_partout"] = "aucun"

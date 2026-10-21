@@ -11,8 +11,12 @@ const TARIFS = { "gpt-5.6-luna": [0.20, 1.20] };
 const TAILLE_MAX = 3 * 1024 * 1024;
 const TYPES = {
   toile: "painting on stretched canvas", papier: "work on paper",
-  photo: "photograph", affiche: "poster or reproduction"
+  photo: "photograph", affiche: "poster or reproduction",
+  autre: "other (object, textile, mixed media)"
 };
+
+// « autre » accepte toute moulure sauf la caisse américaine, faite pour la toile.
+const compatible = (m, type) => (type === "autre" ? m.famille !== "caisse_americaine" : m.convient.includes(type));
 
 const jour = () => new Date().toISOString().slice(0, 10);
 
@@ -181,7 +185,9 @@ async function suggerer(req, env) {
     ],
     text: { format: { type: "json_schema", name: "suggestions_cadres", strict: true, schema: schema(cat) } },
     reasoning: { effort: "low" },
-    max_output_tokens: 2500
+    max_output_tokens: 2500,
+    // sans ce champ, l'API garde la requête 30 jours (photo comprise)
+    store: false
   };
   let r = await appeler(env, corps);
   if (r.status === 400) {
@@ -212,7 +218,7 @@ async function suggerer(req, env) {
   const vus = new Set(), garde = [];
   for (const s of res.suggestions || []) {
     const m = parId[s.id];
-    if (!m || vus.has(m.id) || !m.convient.includes(type)) continue;
+    if (!m || vus.has(m.id) || !compatible(m, type)) continue;
     if (type === "toile" || m.famille === "caisse_americaine" || prefs.passe === "sans") s.passe_partout = "aucun";
     else if (prefs.passe === "avec" && s.passe_partout === "aucun") s.passe_partout = "blanc_casse";
     vus.add(m.id);
