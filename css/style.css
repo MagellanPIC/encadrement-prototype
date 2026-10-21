@@ -100,6 +100,37 @@ select, input[type=number] {
 .unite { display: flex; align-items: center; gap: 6px; color: var(--doux); }
 .aide { color: var(--doux); font-size: .87rem; margin: 10px 0 18px; }
 
+/* ---- goûts du visiteur ---- */
+.preferences {
+  grid-column: 1 / -1; background: var(--carte); border: 1px solid var(--ligne); border-radius: 16px;
+  padding: clamp(16px, 2.5vw, 26px);
+}
+.pref-tete { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.pref-tete h3 { margin: 0; }
+.pref-tete h3 span { font-family: var(--texte); font-size: .9rem; font-weight: 400; color: var(--doux); }
+.preferences > .aide { margin: 6px 0 16px; }
+.pref-grille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 28px; }
+.pref-titre { display: block; font-size: .85rem; color: var(--doux); margin-bottom: 8px; }
+.choix { display: flex; flex-wrap: wrap; gap: 8px; }
+.choix button {
+  display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
+  background: var(--fond); border: 1px solid #d6d0c4; border-radius: 99px; padding: 7px 13px; font-size: .9rem;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.choix button:hover { border-color: var(--accent); }
+.choix button[aria-pressed=true] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.choix .teinte { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(0,0,0,.2); flex: none; }
+.pref-texte { margin: 18px 0 0; position: relative; }
+.pref-texte textarea {
+  font: inherit; background: var(--fond); border: 1px solid #cfc8bb; border-radius: 10px; padding: 10px 12px;
+  resize: vertical; min-height: 64px; width: 100%;
+}
+.compte { align-self: flex-end; color: var(--doux); font-size: .78rem; }
+.lancer { grid-column: 1 / -1; display: flex; justify-content: center; }
+.lancer .principal { min-width: 260px; }
+.gouts { font-size: .88rem; margin: 6px 0 0; }
+.gouts a { margin-left: 6px; }
+
 /* ---- 3. résultats ---- */
 .resultats { padding: 40px 0 0; }
 .analyse { max-width: 760px; margin-bottom: 26px; }
@@ -202,6 +233,8 @@ select, input[type=number] {
 }
 @media (max-width: 680px) {
   .oeuvre { grid-template-columns: 1fr; }
+  .pref-grille { grid-template-columns: 1fr; }
+  .lancer .principal { width: 100%; }
   .grille { grid-template-columns: 1fr 1fr; gap: 10px; }
   .carte { padding: 8px; }
   .carte p { display: none; }

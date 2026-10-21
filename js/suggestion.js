@@ -173,33 +173,134 @@
     return { score: s, raison: raisons.length ? raisons[0].texte : m.description };
   }
 
-  function passePartoutLocal(a, type, moulure) {
-    if (type === "toile" || moulure.famille === "caisse_americaine") return "aucun";
+  function passePartoutLocal(a, type, moulure, q) {
+    if (type === "toile" || moulure.famille === "caisse_americaine" || q.passe === "sans") return "aucun";
     if (a.mono) return a.luminosite < 0.4 && moulure.valeur === "fonce" ? "noir" : "blanc_casse";
     if (a.chaleur > 0.25) return "creme";
     if (a.chaleur < -0.2) return "gris_perle";
     return "blanc_casse";
   }
 
-  // Six moulures, une par famille d'abord, pour que le choix soit un vrai choix.
-  function choisirLocal(cat, a, type, cm) {
-    const notes = cat.moulures.map((m) => Object.assign({ m }, noter(m, a, type, cm)))
-      .sort((x, y) => y.score - x.score);
-    const pris = [], familles = new Set();
-    for (const n of notes) {
-      if (pris.length === 6) break;
-      if (!familles.has(n.m.famille)) { pris.push(n); familles.add(n.m.famille); }
+  // ---- Goûts du visiteur ---------------------------------------------------------
+  const sansAccents = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+  // Sans IA, la case texte est lue par mots-clés et rejoint les critères cochés.
+  const MOTS = [
+    [/\b(dore|doree|dorure|or)\b/, "teintes", "dore"],
+    [/\b(argent|argente|argentee|chrome|metal)\b/, "teintes", "argente"],
+    [/\bnoir/, "teintes", "noir"],
+    [/\bblanc/, "teintes", "blanc"],
+    [/\b(bois clair|chene|erable|frene|blond)/, "teintes", "bois_clair"],
+    [/\b(bois fonce|noyer|acajou|wenge|ebene)/, "teintes", "bois_fonce"],
+    [/\bbois\b(?! (clair|fonce))/, "teintes", "bois_clair"],
+    [/\bbois\b(?! (clair|fonce))/, "teintes", "bois_fonce"],
+    [/\b(moderne|contemporain|minimalis)/, "styles", "moderne"],
+    [/\b(classique|traditionnel)/, "styles", "classique"],
+    [/\b(ancien|antique|baroque|vintage|retro|sculpte)/, "styles", "ancien"],
+    [/\b(scandinave|nordique)/, "styles", "scandinave"],
+    [/\b(rustique|chalet|campagne|grange|champetre)/, "styles", "rustique"],
+    [/\b(galerie|epure|sobre)/, "styles", "galerie"],
+    [/\b(fin|mince|discret|leger)\b/, "presence", "discret"],
+    [/\b(large|imposant|massif)\b/, "presence", "affirme"],
+    [/\b(pas cher|economique|petit budget|abordable)/, "budget", "economique"]
+  ];
+
+  function enrichir(p) {
+    const q = {
+      styles: [...(p.styles || [])], teintes: [...(p.teintes || [])],
+      presence: p.presence || null, passe: p.passe || null, budget: p.budget || null,
+      interieur: p.interieur || null, texte: p.texte || "", lus: []
+    };
+    const t = sansAccents(q.texte);
+    for (const [motif, k, v] of MOTS) {
+      if (!motif.test(t)) continue;
+      if (Array.isArray(q[k])) { if (!q[k].includes(v)) { q[k].push(v); q.lus.push(v); } }
+      else if (!q[k]) { q[k] = v; q.lus.push(v); }
     }
-    for (const n of notes) {
-      if (pris.length === 6) break;
-      if (!pris.includes(n)) pris.push(n);
+    return q;
+  }
+
+  // Points, part des critères tenus, et ce qu'on dira au visiteur.
+  function noterPrefs(m, q, crit) {
+    let pts = 0, poses = 0, tenus = 0;
+    const dits = [];
+    const def = (k, id) => (crit[k] || []).find((c) => c.id === id) || {};
+    const nom = (k, id) => (def(k, id).nom || id).toLowerCase();
+    if (q.styles.length) {
+      poses++;
+      const ok = q.styles.find((s) => m.styles.includes(s));
+      if (ok) { tenus++; pts += 3; dits.push("style " + nom("styles", ok)); } else pts -= 2;
     }
+    if (q.teintes.length) {
+      poses++;
+      const ok = q.teintes.find((t) => m.teintes.includes(t));
+      if (ok) { tenus++; pts += 3.5; dits.push(nom("teintes", ok)); } else pts -= 3;
+    }
+    if (q.presence) {
+      poses++;
+      const c = def("presence", q.presence);
+      if (m.largeur_cm >= (c.min_cm ?? 0) && m.largeur_cm <= (c.max_cm ?? 99)) { tenus++; pts += 2; dits.push(nom("presence", q.presence)); }
+      else pts -= 1.5;
+    }
+    let depassement = 0;
+    if (q.budget) {
+      poses++;
+      const max = def("budget", q.budget).gamme_max ?? 3;
+      depassement = Math.max(0, m.gamme - max);
+      if (!depassement) { tenus++; pts += 0.5; } else pts -= 4 * depassement;
+    }
+    if (q.interieur) {
+      const c = def("interieur", q.interieur);
+      if (m.styles.some((s) => (c.styles || []).includes(s)) || m.teintes.some((t) => (c.teintes || []).includes(t))) {
+        pts += 1.2; dits.push("accordé à votre intérieur");
+      }
+    }
+    return { pts, conformite: poses ? tenus / poses : 1, dits, depassement };
+  }
+
+  // Six moulures. D'abord celles qui tiennent tous les goûts exprimés, une par
+  // famille puis deux ; puis celles qui en tiennent une partie ; enfin les plus
+  // proches, pour que le choix reste un choix.
+  function choisirLocal(cat, a, type, cm, prefs) {
+    const q = enrichir(prefs || {});
+    const crit = cat.criteres || {};
+    const notes = cat.moulures.map((m) => {
+      const n = noter(m, a, type, cm), p = noterPrefs(m, q, crit);
+      const raison = p.dits.length ? `Comme vous le souhaitez : ${p.dits.join(", ")}. ${n.raison}` : n.raison;
+      return { m, raison, score: n.score + p.pts, conformite: p.conformite, depassement: p.depassement, compatible: m.convient.includes(type) };
+    }).sort((x, y) => (y.conformite - x.conformite) || (y.score - x.score));
+
+    const pris = [], compte = {};
+    const prendre = (filtre, plafond) => {
+      for (const n of notes) {
+        if (pris.length === 6) return;
+        if (pris.includes(n) || !filtre(n) || (compte[n.m.famille] || 0) >= plafond) continue;
+        pris.push(n);
+        compte[n.m.famille] = (compte[n.m.famille] || 0) + 1;
+      }
+    };
+    const conforme = (n) => n.compatible && n.conformite === 1;
+    const passes = [
+      [conforme, 1],
+      [conforme, 2],
+      // une moulure qui tient une partie des goûts passe avant la variété des familles
+      [(n) => n.compatible && n.conformite > 0 && !n.depassement, 2],
+      [(n) => n.compatible && !n.depassement, 1],
+      [(n) => n.compatible && !n.depassement, 2],
+      // s'il faut dépasser le budget, d'un cran d'abord
+      [(n) => n.compatible && n.depassement <= 1, 2],
+      [(n) => n.compatible, 1],
+      [(n) => n.compatible, 2],
+      [() => true, 6]
+    ];
+    for (const [filtre, plafond] of passes) prendre(filtre, plafond);
     return {
       mode: "local",
       lecture: lecture(a),
       palette: a.palette.map((p) => p.hex),
+      motsCompris: q.lus,
       suggestions: pris.map((n) => ({
-        id: n.m.id, raison: n.raison, passe_partout: passePartoutLocal(a, type, n.m)
+        id: n.m.id, raison: n.raison, passe_partout: passePartoutLocal(a, type, n.m, q)
       }))
     };
   }
@@ -224,25 +325,25 @@
     }
   }
 
-  async function proposer(cat, source, type, cm, etat) {
+  async function proposer(cat, source, type, cm, etat, prefs) {
     const a = analyser(source);
     if (etat && etat.ia) {
       try {
         const r = await fetch((window.BASE_IA || "") + "api/suggest", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ image: jpegBase64(source, 768), type, dimensions_cm: cm })
+          body: JSON.stringify({ image: jpegBase64(source, 768), type, dimensions_cm: cm, preferences: prefs })
         });
         const res = await r.json();
         if (!r.ok || res.erreur) throw new Error(res.erreur || "HTTP " + r.status);
         return res;
       } catch (e) {
-        const repli = choisirLocal(cat, a, type, cm);
+        const repli = choisirLocal(cat, a, type, cm, prefs);
         repli.avertissement = "L'IA n'a pas répondu (" + e.message + "). Suggestions faites par l'analyse locale.";
         return repli;
       }
     }
-    return choisirLocal(cat, a, type, cm);
+    return choisirLocal(cat, a, type, cm, prefs);
   }
 
   window.Suggestion = { analyser, proposer, etatServeur, choisirLocal };

@@ -69,6 +69,30 @@
           <label class="champ"><span>Hauteur</span><span class="unite"><input id="haut" type="number" min="5" max="300" step="0.5" inputmode="decimal">cm</span></label>
         </div>
         <p class="aide">Les proportions de la photo sont conservées. Mesurez la partie visible de l'œuvre.</p>
+      </div>
+
+      <div id="preferences" class="preferences">
+        <div class="pref-tete">
+          <h3>Vos goûts <span>(facultatif)</span></h3>
+          <button type="button" id="prefs-effacer" class="lien" hidden>Tout effacer</button>
+        </div>
+        <p class="aide">Ne cochez rien pour laisser l'IA choisir d'après l'œuvre. Chaque précision oriente les propositions.</p>
+        <div class="pref-grille">
+          <div class="pref" data-critere="styles"><span class="pref-titre">Style du cadre</span><div class="choix"></div></div>
+          <div class="pref" data-critere="teintes"><span class="pref-titre">Teinte</span><div class="choix"></div></div>
+          <div class="pref" data-critere="presence" data-unique><span class="pref-titre">Présence</span><div class="choix"></div></div>
+          <div class="pref" data-critere="passe" data-unique><span class="pref-titre">Passe-partout</span><div class="choix"></div></div>
+          <div class="pref" data-critere="budget" data-unique><span class="pref-titre">Budget</span><div class="choix"></div></div>
+          <div class="pref" data-critere="interieur" data-unique><span class="pref-titre">La pièce où il sera accroché</span><div class="choix"></div></div>
+        </div>
+        <label class="champ pref-texte">
+          <span>En quelques mots</span>
+          <textarea id="prefs-texte" rows="2" maxlength="280" placeholder="Ex. : c'est un cadeau, elle aime le doré ; pour un chalet ; je veux un cadre très discret…"></textarea>
+          <small id="prefs-compte" class="compte">0 / 280</small>
+        </label>
+      </div>
+
+      <div class="lancer">
         <button type="button" id="btn-proposer" class="principal">Proposer six cadres</button>
       </div>
     </section>
@@ -80,6 +104,7 @@
         <p id="lecture" class="lecture"></p>
         <div id="palette" class="palette" aria-label="Couleurs dominantes"></div>
         <p id="mode" class="mode"></p>
+        <p id="gouts" class="gouts" hidden></p>
       </div>
 
       <div class="atelier">

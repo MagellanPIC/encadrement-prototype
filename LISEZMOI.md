@@ -41,6 +41,34 @@ dépendance.
   couleurs de l'œuvre dans le navigateur et choisit par règles
   (`js/suggestion.js`). C'est gratuit et instantané, et l'interface le signale.
 
+## Les goûts du visiteur
+
+Sous la photo, le bloc « Vos goûts » est entièrement facultatif. Si le visiteur
+ne coche rien, l'IA décide d'après l'œuvre. Il peut préciser :
+
+- le style du cadre ;
+- la teinte ;
+- la présence (largeur) ;
+- le passe-partout ;
+- le budget ;
+- la pièce où l'œuvre sera accrochée ;
+- quelques mots libres, 280 caractères au plus.
+
+Le vocabulaire de ces critères est dans `catalogue.json` (`criteres`), et
+chaque moulure porte ses `styles`, ses `teintes` et sa `gamme` (de 1 à 3).
+
+- **Avec l'IA**, les goûts passent avant sa propre lecture de l'œuvre. Au moins
+  4 des 6 cadres doivent tenir tous les critères cochés, si le catalogue le
+  permet. Le texte libre est transmis comme une information, jamais comme une
+  consigne.
+- **Sans l'IA**, l'analyse locale range d'abord les moulures qui tiennent tous
+  les goûts, puis celles qui en tiennent une partie. Elle ne dépasse le budget
+  que d'un cran, et seulement s'il le faut. Le texte libre y est lu par
+  mots-clés (« doré », « chalet », « bois », « discret »…), et l'interface
+  affiche les mots retenus.
+- **Le passe-partout** demandé (avec ou sans) est appliqué par le code, pas
+  laissé au modèle.
+
 ## Le catalogue
 
 Tout est dans `catalogue.json`. Les 19 moulures sont **fictives**. Il y a deux

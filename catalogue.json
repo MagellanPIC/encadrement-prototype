@@ -7,12 +7,53 @@
     {"id": "gris_perle",  "nom": "Gris perle",  "couleur": "#cfcdc8", "ame": "#f4f3f0"},
     {"id": "noir",        "nom": "Noir",        "couleur": "#1d1c1b", "ame": "#f1efe9"}
   ],
+  "_criteres": "Goûts que le visiteur peut préciser. Les ids de 'styles' et 'teintes' sont ceux des champs du même nom de chaque moulure ; 'gamme' va de 1 (économique) à 3 (haut de gamme).",
+  "criteres": {
+    "styles": [
+      {"id": "moderne",    "nom": "Moderne"},
+      {"id": "classique",  "nom": "Classique"},
+      {"id": "ancien",     "nom": "Ancien, de caractère"},
+      {"id": "scandinave", "nom": "Scandinave"},
+      {"id": "rustique",   "nom": "Rustique, chalet"},
+      {"id": "galerie",    "nom": "Galerie, épuré"}
+    ],
+    "teintes": [
+      {"id": "noir",       "nom": "Noir",       "couleur": "#1f1e1c"},
+      {"id": "blanc",      "nom": "Blanc",      "couleur": "#f2f0eb"},
+      {"id": "bois_clair", "nom": "Bois clair", "couleur": "#d6b98c"},
+      {"id": "bois_fonce", "nom": "Bois foncé", "couleur": "#6b4630"},
+      {"id": "dore",       "nom": "Doré",       "couleur": "#c9a24a"},
+      {"id": "argente",    "nom": "Argenté",    "couleur": "#b9bcbf"}
+    ],
+    "presence": [
+      {"id": "discret",   "nom": "Discret, fin",   "max_cm": 2.2},
+      {"id": "equilibre", "nom": "Équilibré",      "min_cm": 2.3, "max_cm": 4.0},
+      {"id": "affirme",   "nom": "Affirmé, large", "min_cm": 4.1}
+    ],
+    "passe": [
+      {"id": "avec", "nom": "Avec"},
+      {"id": "sans", "nom": "Sans"}
+    ],
+    "budget": [
+      {"id": "economique",    "nom": "Économique",    "gamme_max": 1},
+      {"id": "intermediaire", "nom": "Intermédiaire", "gamme_max": 2},
+      {"id": "libre",         "nom": "Sans limite",   "gamme_max": 3}
+    ],
+    "interieur": [
+      {"id": "epure",      "nom": "Épuré, moderne",       "styles": ["moderne", "galerie"],     "teintes": ["noir", "blanc", "argente"]},
+      {"id": "chaleureux", "nom": "Chaleureux, bois",     "styles": ["scandinave", "rustique"], "teintes": ["bois_clair", "bois_fonce"]},
+      {"id": "classique",  "nom": "Classique, bourgeois", "styles": ["classique", "ancien"],    "teintes": ["dore", "bois_fonce"]},
+      {"id": "industriel", "nom": "Industriel, loft",     "styles": ["moderne"],                "teintes": ["noir", "argente"]},
+      {"id": "champetre",  "nom": "Champêtre, chalet",    "styles": ["rustique"],               "teintes": ["bois_clair", "bois_fonce"]}
+    ]
+  },
   "moulures": [
     {
       "id": "M-101", "nom": "Noir mat fin", "famille": "noir",
       "style": "moderne", "finition": "noir mat", "matiere": "bois peint",
       "largeur_cm": 1.6, "temperature": "neutre", "valeur": "fonce",
       "convient": ["photo", "affiche", "papier"],
+      "styles": ["moderne", "galerie"], "teintes": ["noir"], "gamme": 1,
       "description": "Baguette plate et étroite, noir profond. La référence pour la photo et le graphisme.",
       "rendu": {"type": "procedural", "matiere": "noir_mat",
         "profil": [{"w": 1, "forme": "plat", "h0": 1.6}]}
@@ -22,6 +63,7 @@
       "style": "contemporain", "finition": "noir laqué", "matiere": "bois laqué",
       "largeur_cm": 3.2, "temperature": "neutre", "valeur": "fonce",
       "convient": ["photo", "affiche", "papier", "toile"],
+      "styles": ["moderne", "classique"], "teintes": ["noir"], "gamme": 2,
       "description": "Profil creusé en gorge, laque brillante. Élégant sur les œuvres contrastées.",
       "rendu": {"type": "procedural", "matiere": "noir_laque",
         "profil": [{"w": 0.12, "forme": "perle", "h0": 2.2, "h1": 2.2, "a": 0.25},
@@ -33,6 +75,7 @@
       "style": "moderne", "finition": "blanc satiné", "matiere": "bois peint",
       "largeur_cm": 2.2, "temperature": "neutre", "valeur": "clair",
       "convient": ["photo", "affiche", "papier"],
+      "styles": ["moderne", "galerie", "scandinave"], "teintes": ["blanc"], "gamme": 1,
       "description": "Plat, blanc satiné, finition de galerie. S'efface derrière l'œuvre.",
       "rendu": {"type": "procedural", "matiere": "blanc_satine",
         "profil": [{"w": 1, "forme": "plat", "h0": 1.8}]}
@@ -42,6 +85,7 @@
       "style": "scandinave", "finition": "chêne huilé", "matiere": "chêne massif",
       "largeur_cm": 2.6, "temperature": "chaud", "valeur": "clair",
       "convient": ["photo", "affiche", "papier", "toile"],
+      "styles": ["scandinave", "moderne"], "teintes": ["bois_clair"], "gamme": 1,
       "description": "Chêne massif huilé, veinage visible. Chaleureux sans être lourd.",
       "rendu": {"type": "procedural", "matiere": "chene",
         "profil": [{"w": 1, "forme": "plat", "h0": 2.0}]}
@@ -51,6 +95,7 @@
       "style": "scandinave", "finition": "chêne céruse", "matiere": "chêne massif",
       "largeur_cm": 3.0, "temperature": "neutre", "valeur": "clair",
       "convient": ["photo", "affiche", "papier", "toile"],
+      "styles": ["scandinave", "rustique"], "teintes": ["bois_clair", "blanc"], "gamme": 2,
       "description": "Chêne cérusé au profil doucement bombé. Lumineux, pour les tons pastel.",
       "rendu": {"type": "procedural", "matiere": "chene_blanchi",
         "profil": [{"w": 1, "forme": "bombe", "h0": 1.6, "h1": 1.6, "a": 0.7}]}
@@ -60,6 +105,7 @@
       "style": "classique", "finition": "noyer ciré", "matiere": "noyer massif",
       "largeur_cm": 3.5, "temperature": "chaud", "valeur": "fonce",
       "convient": ["photo", "papier", "toile"],
+      "styles": ["classique"], "teintes": ["bois_fonce"], "gamme": 2,
       "description": "Noyer ciré au profil demi-rond. Profond et chaud, pour les œuvres riches en bruns et ocres.",
       "rendu": {"type": "procedural", "matiere": "noyer",
         "profil": [{"w": 0.85, "forme": "bombe", "h0": 1.4, "h1": 1.8, "a": 1.0},
@@ -70,6 +116,7 @@
       "style": "contemporain", "finition": "teinte ébène", "matiere": "frêne teinté",
       "largeur_cm": 2.8, "temperature": "neutre", "valeur": "fonce",
       "convient": ["photo", "affiche", "papier", "toile"],
+      "styles": ["moderne"], "teintes": ["noir", "bois_fonce"], "gamme": 2,
       "description": "Frêne teinté presque noir, profil à deux gradins. Le grain reste visible.",
       "rendu": {"type": "procedural", "matiere": "ebene",
         "profil": [{"w": 0.45, "forme": "plat", "h0": 2.4},
@@ -81,6 +128,7 @@
       "style": "contemporain", "finition": "érable naturel", "matiere": "érable",
       "largeur_cm": 1.8, "temperature": "chaud", "valeur": "clair",
       "convient": ["toile"],
+      "styles": ["galerie", "scandinave"], "teintes": ["bois_clair"], "gamme": 2,
       "description": "Cadre flottant pour toile sur châssis : la toile semble suspendue, un jour sombre l'entoure.",
       "rendu": {"type": "procedural", "matiere": "erable",
         "profil": [{"w": 0.5, "forme": "plat", "h0": 3.5},
@@ -91,6 +139,7 @@
       "style": "moderne", "finition": "noir mat", "matiere": "bois peint",
       "largeur_cm": 1.8, "temperature": "neutre", "valeur": "fonce",
       "convient": ["toile"],
+      "styles": ["galerie", "moderne"], "teintes": ["noir"], "gamme": 1,
       "description": "Le cadre flottant le plus sobre : un filet noir et une ombre autour de la toile.",
       "rendu": {"type": "procedural", "matiere": "noir_mat",
         "profil": [{"w": 0.5, "forme": "plat", "h0": 3.5},
@@ -101,6 +150,7 @@
       "style": "moderne", "finition": "aluminium brossé", "matiere": "aluminium",
       "largeur_cm": 1.1, "temperature": "froid", "valeur": "moyen",
       "convient": ["photo", "affiche"],
+      "styles": ["moderne", "galerie"], "teintes": ["argente"], "gamme": 1,
       "description": "Profilé aluminium très fin. Net, technique, pour la photo contemporaine.",
       "rendu": {"type": "procedural", "matiere": "alu_argent",
         "profil": [{"w": 1, "forme": "plat", "h0": 2.0}]}
@@ -110,6 +160,7 @@
       "style": "moderne", "finition": "aluminium anodisé or pâle", "matiere": "aluminium",
       "largeur_cm": 1.1, "temperature": "chaud", "valeur": "moyen",
       "convient": ["photo", "affiche", "papier"],
+      "styles": ["moderne"], "teintes": ["dore"], "gamme": 1,
       "description": "Profilé fin au reflet doré discret. Une touche de lumière sans ornement.",
       "rendu": {"type": "procedural", "matiere": "alu_champagne",
         "profil": [{"w": 1, "forme": "plat", "h0": 2.0}]}
@@ -119,6 +170,7 @@
       "style": "classique", "finition": "feuille d'or patinée", "matiere": "bois doré",
       "largeur_cm": 4.6, "temperature": "chaud", "valeur": "moyen",
       "convient": ["papier", "toile"],
+      "styles": ["classique", "ancien"], "teintes": ["dore"], "gamme": 3,
       "description": "Profil classique à perle extérieure et doucine, dorure à la feuille légèrement patinée.",
       "rendu": {"type": "procedural", "matiere": "or_feuille",
         "profil": [{"w": 0.16, "forme": "perle", "h0": 2.0, "h1": 2.6, "a": 0.5},
@@ -132,6 +184,7 @@
       "style": "classique", "finition": "feuille d'argent patinée", "matiere": "bois argenté",
       "largeur_cm": 4.0, "temperature": "froid", "valeur": "moyen",
       "convient": ["photo", "papier", "toile"],
+      "styles": ["classique", "ancien"], "teintes": ["argente"], "gamme": 3,
       "description": "Gorge argentée à patine grise. Classique mais frais, pour les bleus et les gris.",
       "rendu": {"type": "procedural", "matiere": "argent_feuille",
         "profil": [{"w": 0.14, "forme": "perle", "h0": 2.2, "h1": 2.2, "a": 0.35},
@@ -143,6 +196,7 @@
       "style": "musée", "finition": "panneau noir, filets dorés", "matiere": "bois peint et doré",
       "largeur_cm": 6.0, "temperature": "chaud", "valeur": "fonce",
       "convient": ["papier", "toile"],
+      "styles": ["ancien", "classique"], "teintes": ["noir", "dore"], "gamme": 3,
       "description": "Inspiré des cadres « cassetta » italiens : large panneau plat noir entre deux filets dorés.",
       "rendu": {"type": "procedural", "matiere": "noir_mat", "matiere_2": "or_feuille",
         "profil": [{"w": 0.10, "forme": "perle", "h0": 2.6, "h1": 2.6, "a": 0.35, "matiere": 2},
@@ -156,6 +210,7 @@
       "style": "rustique", "finition": "bois vieilli gris", "matiere": "pin récupéré",
       "largeur_cm": 4.2, "temperature": "neutre", "valeur": "moyen",
       "convient": ["photo", "affiche", "toile"],
+      "styles": ["rustique"], "teintes": ["bois_clair", "bois_fonce"], "gamme": 1,
       "description": "Planche plate au bois grisé et usé. Pour les paysages et les ambiances de campagne.",
       "rendu": {"type": "procedural", "matiere": "grange",
         "profil": [{"w": 1, "forme": "bombe", "h0": 1.8, "h1": 1.8, "a": 0.15}]}
@@ -165,6 +220,7 @@
       "style": "classique", "finition": "dorure à la feuille, frise de rosaces", "matiere": "bois doré",
       "largeur_cm": 6.5, "temperature": "chaud", "valeur": "moyen",
       "convient": ["toile", "papier"],
+      "styles": ["ancien", "classique"], "teintes": ["dore"], "gamme": 3,
       "description": "D'après un cadre doré de style Empire (vers 1824), ponctué de rosaces. Pour les peintures figuratives et les sujets classiques.",
       "photo": "Sailko, Wikimedia Commons, CC BY 3.0",
       "rendu": {"type": "image", "src": "assets/cadres/empire_dore.png", "repetition": "arrondir", "relief_cm": 2.5}
@@ -174,6 +230,7 @@
       "style": "musée", "finition": "noyer, moulures dorées sculptées", "matiere": "noyer et dorure",
       "largeur_cm": 7.0, "temperature": "chaud", "valeur": "fonce",
       "convient": ["toile", "papier"],
+      "styles": ["ancien"], "teintes": ["bois_fonce", "dore"], "gamme": 3,
       "description": "D'après une cassetta vénitienne du XVIᵉ siècle : noyer sombre et rangs de perles dorées. Pour les œuvres anciennes, les icônes et les fonds dorés.",
       "photo": "The Metropolitan Museum of Art, CC0",
       "rendu": {"type": "image", "src": "assets/cadres/noyer_cassetta.jpg", "repetition": "arrondir", "relief_cm": 2.5,
@@ -185,6 +242,7 @@
       "style": "classique", "finition": "ébène, filet de perles doré", "matiere": "placage d'ébène",
       "largeur_cm": 4.5, "temperature": "neutre", "valeur": "fonce",
       "convient": ["photo", "papier", "toile"],
+      "styles": ["ancien", "classique"], "teintes": ["noir"], "gamme": 3,
       "description": "D'après un cadre hollandais du XVIIᵉ siècle : large plat d'ébène et fine frise de perles contre l'œuvre. Sobre et précieux.",
       "photo": "The Metropolitan Museum of Art, CC0",
       "rendu": {"type": "image", "src": "assets/cadres/ebene_filet.jpg", "repetition": "arrondir", "relief_cm": 1.8,
@@ -197,6 +255,7 @@
       "style": "classique", "finition": "placage d'érable moucheté", "matiere": "érable",
       "largeur_cm": 2.2, "temperature": "chaud", "valeur": "clair",
       "convient": ["photo", "papier", "affiche", "toile"],
+      "styles": ["ancien", "scandinave"], "teintes": ["bois_clair"], "gamme": 2,
       "description": "D'après un cadre Biedermeier (Munich, vers 1835) : baguette plate en érable moucheté, d'une grande simplicité.",
       "photo": "The Metropolitan Museum of Art, CC0",
       "rendu": {"type": "image", "src": "assets/cadres/erable_biedermeier.jpg", "repetition": "etirer", "relief_cm": 1.0,
