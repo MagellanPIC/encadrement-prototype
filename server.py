@@ -23,7 +23,7 @@ import urllib.request
 
 RACINE = pathlib.Path(__file__).resolve().parent
 JOURNAL = RACINE / "journal_ia.jsonl"
-INTERDITS = {"server.py", "journal_ia.jsonl"}
+INTERDITS = {"server.py", "journal_ia.jsonl", "wrangler.toml"}
 TAILLE_MAX = 8 * 1024 * 1024
 
 # Tarif de gpt-5.6-luna en $ par million de jetons (entrée, sortie), relevé
@@ -83,19 +83,8 @@ def journaliser(entree: dict) -> None:
 
 
 # ---- Appel au modèle ----------------------------------------------------------
-CONSIGNE = """You are an experienced picture framer advising a customer at a framing shop in Quebec.
-You look at a photo of the customer's artwork and choose frame mouldings from the shop's catalogue.
-
-Rules:
-- Choose exactly 6 different moulding ids from the catalogue, best match first.
-- Never choose a moulding whose `convient` list does not include the artwork type.
-- Make it a real choice: at most 2 mouldings from the same `famille`; include at least one sober option and one with more presence when the catalogue allows it.
-- Keep the moulding width in proportion to the artwork size: narrow mouldings for small formats.
-- `raison`: in French (Quebec, formal "vous" register), at most 25 words. Name what you actually see in the artwork (colours, subject, light, mood) and why this moulding suits it. No superlatives, no sales talk.
-- `passe_partout`: one of the mat ids. Use "aucun" for a canvas (type "toile") and for any moulding of famille "caisse_americaine".
-- `lecture`: in French, 1 or 2 sentences describing what you see: subject, dominant colours, mood. Do not guess the artist or the value.
-- `palette`: the 3 to 5 dominant colours of the artwork, as #rrggbb.
-- If the photo shows the artwork with a wall or table around it, judge only the artwork."""
+# La consigne est partagée avec la fonction en ligne (worker/src/index.js).
+CONSIGNE = (RACINE / "ia" / "consigne.txt").read_text(encoding="utf-8").strip()
 
 TYPES = {"toile": "painting on stretched canvas", "papier": "work on paper",
          "photo": "photograph", "affiche": "poster or reproduction"}

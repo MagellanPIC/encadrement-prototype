@@ -9,3 +9,7 @@ assets/cadres/argent_cassetta.jpg
 assets/cadres/baroque.jpg
 assets/cadres/dore_lauriers.jpg
 assets/cadres/dore_vieilli.jpg
+
+# état local de wrangler
+worker/.wrangler/
+node_modules/

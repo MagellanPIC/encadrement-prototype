@@ -26,9 +26,20 @@ dépendance.
     estimé. Aucune image n'y est conservée.
   - `PLAFOND_JOUR_USD` coupe l'IA quand la dépense du jour l'atteint (2 $ par
     défaut).
-- **Sans clé** (et sur GitHub Pages), le site analyse les couleurs de l'œuvre
-  dans le navigateur et choisit par règles (`js/suggestion.js`). C'est gratuit
-  et instantané, et l'interface le signale.
+- **En ligne** (GitHub Pages), la page appelle la fonction Cloudflare
+  `https://encadrement-ia.magellanpic.workers.dev` (dossier `worker/`, adresse
+  dans `js/config.js`). Elle suit le même contrat que `server.py` et lit la
+  même consigne (`ia/consigne.txt`).
+  - La clé OpenAI est un secret du Worker. On la pose avec
+    `npx wrangler@4.148.0 secret put OPENAI_API_KEY` depuis `worker/`. Elle
+    n'est jamais dans le dépôt.
+  - Plafond de 0,50 $ par jour et 30 demandes par adresse et par jour,
+    comptés dans Workers KV. Pour les modifier : `worker/wrangler.toml`, puis
+    `npx wrangler@4.148.0 deploy`.
+  - Seules les origines listées dans `ORIGINES` reçoivent les en-têtes CORS.
+- **Sans clé ni fonction**, ou une fois le plafond atteint, le site analyse les
+  couleurs de l'œuvre dans le navigateur et choisit par règles
+  (`js/suggestion.js`). C'est gratuit et instantané, et l'interface le signale.
 
 ## Le catalogue
 
@@ -53,10 +64,8 @@ Pour passer aux vraies moulures de l'atelier, il faut, par moulure :
 ## Ce qui reste à faire pour un site réel
 
 1. Les moulures et les prix réels de l'atelier.
-2. L'IA en ligne : une fonction serveur (Cloudflare Workers, Vercel ou Netlify)
-   qui reprend `suggerer()` de `server.py` et garde la clé secrète.
-3. Le formulaire de soumission, avec l'envoi de l'image à l'atelier.
-4. Le redressement de perspective, pour les photos prises de biais (le
+2. Le formulaire de soumission, avec l'envoi de l'image à l'atelier.
+3. Le redressement de perspective, pour les photos prises de biais (le
    recadrage actuel est rectangulaire).
 
 Crédits des images : `credits.html`.

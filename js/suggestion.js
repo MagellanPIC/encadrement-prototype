@@ -1,5 +1,6 @@
 /* Suggestion de six moulures.
-   1) Par l'IA quand le serveur a une clé OpenAI (/api/suggest).
+   1) Par l'IA quand le serveur a une clé OpenAI (/api/suggest) : server.py
+      en local, la fonction Cloudflare (window.BASE_IA) sur GitHub Pages.
    2) Sinon, par une analyse locale des couleurs de l'œuvre : gratuite,
       instantanée, et étiquetée comme telle dans l'interface. */
 (function () {
@@ -215,7 +216,7 @@
 
   async function etatServeur() {
     try {
-      const r = await fetch("api/etat", { cache: "no-store" });
+      const r = await fetch((window.BASE_IA || "") + "api/etat", { cache: "no-store" });
       if (!r.ok) return { ia: false };
       return await r.json();
     } catch (e) {
@@ -227,7 +228,7 @@
     const a = analyser(source);
     if (etat && etat.ia) {
       try {
-        const r = await fetch("api/suggest", {
+        const r = await fetch((window.BASE_IA || "") + "api/suggest", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ image: jpegBase64(source, 768), type, dimensions_cm: cm })
