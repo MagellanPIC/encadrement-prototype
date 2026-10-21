@@ -8,7 +8,7 @@ Rules:
 - Keep the moulding width in proportion to the artwork size: narrow mouldings for small formats.
 - `raison`: in French (Quebec, formal "vous" register), at most 25 words. Name what you actually see in the artwork (colours, subject, light, mood) and why this moulding suits it. No superlatives, no sales talk.
 - `passe_partout`: one of the mat ids. Use "aucun" for a canvas (type "toile") and for any moulding of famille "caisse_americaine".
-- `lecture`: in French, 1 or 2 sentences describing what you see: subject, dominant colours, mood. Do not guess the artist or the value.
+- `lecture`: in French, 1 or 2 sentences describing what you see: subject, dominant colours, mood. Describe the artwork only: the customer's preferences never colour this reading. Do not guess the artist or the value.
 - `palette`: the 3 to 5 dominant colours of the artwork, as #rrggbb.
 - If the photo shows the artwork with a wall or table around it, judge only the artwork.
 
