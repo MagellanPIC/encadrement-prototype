@@ -16,6 +16,15 @@ python server.py
 Ouvrir ensuite http://localhost:8765. Python 3.10 ou plus récent suffit : aucune
 dépendance.
 
+## Mettre en ligne une nouvelle version
+
+Pousser sur `main` : GitHub Pages republie en une minute environ.
+
+**Changer d'abord le `?v=` des feuilles de style et des scripts** dans
+`index.html` et `credits.html`. Pages laisse les navigateurs garder les
+fichiers 10 minutes. Sans ce changement, un visiteur venu juste avant voit
+l'ancienne version, ou un mélange des deux.
+
 ## Les suggestions
 
 - **Avec une clé OpenAI.** Copier `.env.example` en `.env` et y mettre
