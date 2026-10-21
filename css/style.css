@@ -126,7 +126,10 @@ select, input[type=number] {
   resize: vertical; min-height: 64px; width: 100%;
 }
 .compte { align-self: flex-end; color: var(--doux); font-size: .78rem; }
-.lancer { grid-column: 1 / -1; display: flex; justify-content: center; }
+.accueil .preferences { text-align: left; margin-top: 32px; }
+.lancer { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.rappel { margin: 0; font-size: .88rem; color: var(--doux); text-align: center; max-width: 640px; }
+.rappel a { margin-left: 4px; }
 .lancer .principal { min-width: 260px; }
 .gouts { font-size: .88rem; margin: 6px 0 0; }
 .gouts a { margin-left: 6px; }

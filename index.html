@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20261021c">
+  <link rel="stylesheet" href="css/style.css?v=20261021d">
 </head>
 <body>
   <header class="entete">
@@ -34,13 +34,35 @@
         <span>ou touchez ici pour en choisir une</span>
       </label>
 
-      <div class="exemples">
-        <span>Pas de photo sous la main ?</span>
+      <!-- œuvres d'exemple : cachées au public, visibles avec ?demo dans l'adresse -->
+      <div id="exemples" class="exemples" hidden>
+        <span>Démonstration :</span>
         <button type="button" class="puce" data-exemple="couleurs">Champs de couleur</button>
         <button type="button" class="puce" data-exemple="paysage">Paysage</button>
         <button type="button" class="puce" data-exemple="photo">Photo noir et blanc</button>
       </div>
       <p class="note">Votre photo sert seulement à proposer les cadres. Elle n'est pas conservée.</p>
+
+      <div id="preferences" class="preferences">
+        <div class="pref-tete">
+          <h3>Vos goûts <span>(facultatif)</span></h3>
+          <button type="button" id="prefs-effacer" class="lien" hidden>Tout effacer</button>
+        </div>
+        <p class="aide">Ne cochez rien pour laisser l'IA choisir d'après l'œuvre. Chaque précision oriente les propositions. Vous pouvez remplir ce bloc avant ou après la photo.</p>
+        <div class="pref-grille">
+          <div class="pref" data-critere="styles"><span class="pref-titre">Style du cadre</span><div class="choix"></div></div>
+          <div class="pref" data-critere="teintes"><span class="pref-titre">Teinte</span><div class="choix"></div></div>
+          <div class="pref" data-critere="presence" data-unique><span class="pref-titre">Présence</span><div class="choix"></div></div>
+          <div class="pref" data-critere="passe" data-unique><span class="pref-titre">Passe-partout</span><div class="choix"></div></div>
+          <div class="pref" data-critere="budget" data-unique><span class="pref-titre">Budget</span><div class="choix"></div></div>
+          <div class="pref" data-critere="interieur" data-unique><span class="pref-titre">La pièce où il sera accroché</span><div class="choix"></div></div>
+        </div>
+        <label class="champ pref-texte">
+          <span>En quelques mots</span>
+          <textarea id="prefs-texte" rows="2" maxlength="280" placeholder="Ex. : c'est un cadeau, elle aime le doré ; pour un chalet ; je veux un cadre très discret…"></textarea>
+          <small id="prefs-compte" class="compte">0 / 280</small>
+        </label>
+      </div>
     </section>
 
     <!-- 2. L'œuvre -->
@@ -71,28 +93,8 @@
         <p class="aide">Les proportions de la photo sont conservées. Mesurez la partie visible de l'œuvre.</p>
       </div>
 
-      <div id="preferences" class="preferences">
-        <div class="pref-tete">
-          <h3>Vos goûts <span>(facultatif)</span></h3>
-          <button type="button" id="prefs-effacer" class="lien" hidden>Tout effacer</button>
-        </div>
-        <p class="aide">Ne cochez rien pour laisser l'IA choisir d'après l'œuvre. Chaque précision oriente les propositions.</p>
-        <div class="pref-grille">
-          <div class="pref" data-critere="styles"><span class="pref-titre">Style du cadre</span><div class="choix"></div></div>
-          <div class="pref" data-critere="teintes"><span class="pref-titre">Teinte</span><div class="choix"></div></div>
-          <div class="pref" data-critere="presence" data-unique><span class="pref-titre">Présence</span><div class="choix"></div></div>
-          <div class="pref" data-critere="passe" data-unique><span class="pref-titre">Passe-partout</span><div class="choix"></div></div>
-          <div class="pref" data-critere="budget" data-unique><span class="pref-titre">Budget</span><div class="choix"></div></div>
-          <div class="pref" data-critere="interieur" data-unique><span class="pref-titre">La pièce où il sera accroché</span><div class="choix"></div></div>
-        </div>
-        <label class="champ pref-texte">
-          <span>En quelques mots</span>
-          <textarea id="prefs-texte" rows="2" maxlength="280" placeholder="Ex. : c'est un cadeau, elle aime le doré ; pour un chalet ; je veux un cadre très discret…"></textarea>
-          <small id="prefs-compte" class="compte">0 / 280</small>
-        </label>
-      </div>
-
       <div class="lancer">
+        <p id="rappel-gouts" class="rappel"></p>
         <button type="button" id="btn-proposer" class="principal">Proposer six cadres</button>
       </div>
     </section>
@@ -180,11 +182,11 @@
 
   <!-- ?v= : à changer à chaque mise en ligne, pour que les navigateurs
        rechargent les scripts au lieu de garder l'ancienne version. -->
-  <script src="js/config.js?v=20261021c"></script>
-  <script src="js/matieres.js?v=20261021c"></script>
-  <script src="js/rendu.js?v=20261021c"></script>
-  <script src="js/suggestion.js?v=20261021c"></script>
-  <script src="js/exemples.js?v=20261021c"></script>
-  <script src="js/app.js?v=20261021c"></script>
+  <script src="js/config.js?v=20261021d"></script>
+  <script src="js/matieres.js?v=20261021d"></script>
+  <script src="js/rendu.js?v=20261021d"></script>
+  <script src="js/suggestion.js?v=20261021d"></script>
+  <script src="js/exemples.js?v=20261021d"></script>
+  <script src="js/app.js?v=20261021d"></script>
 </body>
 </html>

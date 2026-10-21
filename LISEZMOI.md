@@ -50,10 +50,18 @@ l'ancienne version, ou un mélange des deux.
   couleurs de l'œuvre dans le navigateur et choisit par règles
   (`js/suggestion.js`). C'est gratuit et instantané, et l'interface le signale.
 
+## Démonstration sans photo
+
+Les trois œuvres d'exemple sont cachées au public : on n'essaie l'outil qu'avec
+sa propre œuvre. Pour une démonstration, ajouter `?demo` à l'adresse :
+https://magellanpic.github.io/encadrement-prototype/?demo
+
 ## Les goûts du visiteur
 
-Sous la photo, le bloc « Vos goûts » est entièrement facultatif. Si le visiteur
-ne coche rien, l'IA décide d'après l'œuvre. Il peut préciser :
+Sur la page d'accueil, sous la zone photo, le bloc « Vos goûts » est
+entièrement facultatif. Il se remplit avant ou après la photo, et il est
+rappelé à côté du bouton « Proposer six cadres ». Si le visiteur ne coche rien,
+l'IA décide d'après l'œuvre. Il peut préciser :
 
 - le style du cadre ;
 - la teinte ;

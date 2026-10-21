@@ -69,6 +69,8 @@
       const f = e.dataTransfer.files[0];
       if (f) lireFichier(f);
     });
+    // Les œuvres d'exemple ne servent qu'aux démonstrations de l'atelier.
+    $("#exemples").hidden = !new URLSearchParams(location.search).has("demo");
     document.querySelectorAll("[data-exemple]").forEach((b) =>
       b.addEventListener("click", () => {
         const ex = Exemples[b.dataset.exemple]();
@@ -194,6 +196,7 @@
       texte.value = "";
       majPreferences();
     });
+    majPreferences();
   }
 
   function majPreferences() {
@@ -204,7 +207,12 @@
         b.setAttribute("aria-pressed", Array.isArray(v) ? v.includes(b.dataset.id) : v === b.dataset.id));
     });
     $("#prefs-compte").textContent = p.texte.length + " / 280";
-    $("#prefs-effacer").hidden = !resumePreferences();
+    const resume = resumePreferences();
+    $("#prefs-effacer").hidden = !resume;
+    // le bloc est sur l'accueil : on le rappelle à côté du bouton qui lance la proposition
+    $("#rappel-gouts").innerHTML = resume
+      ? "Vos goûts : " + echapper(resume) + ' <a href="#preferences">Modifier</a>'
+      : 'Aucun goût précisé : l\'IA choisira d\'après l\'œuvre. <a href="#preferences">Préciser mes goûts</a>';
   }
 
   // « Doré, classique · discret · sans passe-partout » ; vide si rien n'est choisi.
